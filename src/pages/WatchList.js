@@ -9,18 +9,27 @@ function WatchList() {
 
   return (
     <ListContainer>
-      <h1>Watch List</h1>
-      <List>
-        {watchlist.map((movie) => (
-          <MovieSinglePoster
-            key={movie.id}
-            id={movie.id}
-            poster={movie.poster_path}
-            title={movie.title || movie.name}
-            isButton={true}
-          />
-        ))}
-      </List>
+      {watchlist.length !== 0 ? (
+        <>
+          <h1>Watch List</h1>
+          <List>
+            {watchlist.map((movie) => (
+              <MovieSinglePoster
+                key={movie.id}
+                id={movie.id}
+                poster={movie.poster_path}
+                title={movie.title || movie.name}
+                isButton={true}
+              />
+            ))}
+          </List>
+        </>
+      ) : (
+        <p>
+          The watch list is empty. Please click on a movie and select "+" on the
+          pop-up page to add it to the list.
+        </p>
+      )}
     </ListContainer>
   );
 }
@@ -31,6 +40,7 @@ const ListContainer = styled.div`
   width: 100%;
   min-height: 100vh;
   padding: 100px 2% 0 2%;
+  color: #ddd;
 
   h1 {
     font-size: 1.6vw;

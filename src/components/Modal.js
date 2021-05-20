@@ -22,8 +22,6 @@ function Modal({ open, id, onClose }) {
   const [showAdded, setShowAdded] = useState(false);
   const [showRemoved, setShowRemoved] = useState(false);
 
-  const modalRef = useRef();
-
   // get values from GlobalContext object
   const { addWatchList, removeWatchList, watchlist } =
     useContext(GlobalContext);
@@ -43,6 +41,7 @@ function Modal({ open, id, onClose }) {
     setTimeout(() => setShowRemoved(false), 2500);
   };
 
+  const modalRef = useRef();
   // if backdrop clicked, run onClose function to close modal
   const closeModal = (e) => {
     if (modalRef.current === e.target) {
@@ -50,13 +49,16 @@ function Modal({ open, id, onClose }) {
     }
   };
 
-  // function to return <span> of mapped items, if item is last of array then exclude comma
+  // calculate width of scrollbar for backdrop element
+  const modalBackdropMargin = window.innerWidth - document.body.offsetWidth;
+
+  // function to return mapped items, if item is last of array then exclude comma
   const renderItem = (arr) =>
     arr.map((item) =>
       arr.indexOf(item) === arr.length - 1 ? `${item.name}` : `${item.name}, `
     );
 
-  // same as function above to exclude comma in rendered <span> for last item of array
+  // same as function above to exclude comma in rendered last item of array
   // in addition first filter through array to find items with key value pair {job: "Director"}
   const renderDirector = () => {
     const directors = crew.filter((person) => person.job === "Director");
@@ -206,7 +208,7 @@ function Modal({ open, id, onClose }) {
               </WrapCancelIcon>
             </Container>
           </ModalContainer>
-          <ScrollLock />
+          <ScrollLock margin={modalBackdropMargin} />
         </>
       )}
     </AnimatePresence>,
@@ -222,11 +224,11 @@ export default Modal;
 const ScrollLock = createGlobalStyle`
   body{
     overflow-y: hidden;
-    margin-right: 16px;
+    margin-right: ${(props) => props.margin + "px"}
   }
 
   nav{
-    margin-right: 16px;
+    margin-right: ${(props) => props.margin + "px"}
   }
 `;
 
