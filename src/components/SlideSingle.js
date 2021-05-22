@@ -3,7 +3,10 @@ import styled from "styled-components";
 import Trailer from "./Trailer";
 
 function SlideSingle({ movie }) {
+  // isTrailer tracks when play trailer button is clicked
+  // if yes, render trailer iframe, else render image
   const [isTrailer, setIsTrailer] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const movieURL = "https://image.tmdb.org/t/p/w1280";
 
@@ -14,17 +17,26 @@ function SlideSingle({ movie }) {
   return (
     <Slide key={movie.id}>
       {isTrailer ? (
-        <Trailer id={movie.id} />
+        <Trailer
+          id={movie.id}
+          setIsTrailer={setIsTrailer}
+          setIsPlaying={setIsPlaying}
+        />
       ) : (
         <img
+          loading="lazy"
           src={`${movieURL}${movie.backdrop_path}`}
           alt={movie?.title || movie?.name || movie?.original_title}
         />
       )}
       <Info>
-        <h1>{movie?.title || movie?.name || movie?.original_title}</h1>
-        <button onClick={() => setIsTrailer(true)}>Play Trailer</button>
-        <p>{truncate(movie.overview, 200)}</p>
+        {!isPlaying && (
+          <h1>{movie?.title || movie?.name || movie?.original_title}</h1>
+        )}
+        {!isTrailer && (
+          <button onClick={() => setIsTrailer(true)}>Play Trailer</button>
+        )}
+        {!isPlaying && <p>{truncate(movie.overview, 200)}</p>}
       </Info>
       <Overlay />
     </Slide>
@@ -53,19 +65,13 @@ const Info = styled.div`
   z-index: 1;
   color: #ddd;
 
-  @media (max-width: 600px) {
-    top: 7vw;
-  }
-
   h1 {
     font-size: 2.5vw;
   }
 
   p {
     font-size: 1.2vw;
-    @media (max-width: 600px) {
-      display: none;
-    }
+    margin-top: 1vw;
   }
 
   button {
@@ -75,7 +81,7 @@ const Info = styled.div`
     font-weight: 700;
     border-radius: 0.2vw;
     padding: 0.5vw 2vw;
-    margin: 1.5vw 0 1vw 0;
+    margin-top: 1.5vw;
     color: #ddd;
     background-color: rgba(50, 50, 50, 0.5);
     cursor: pointer;
@@ -86,6 +92,24 @@ const Info = styled.div`
     background-color: #ddd;
     transition: all 0.2s;
   }
+
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1rem;
+    }
+
+    button {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    top: 7vw;
+
+    p {
+      display: none;
+    }
+  }
 `;
 
 const Overlay = styled.div`
@@ -93,7 +117,7 @@ const Overlay = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 7vw;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(17, 17, 17, 1));
   z-index: 1;
 `;

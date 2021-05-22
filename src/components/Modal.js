@@ -212,7 +212,6 @@ function Modal({ open, id, onClose }) {
         </>
       )}
     </AnimatePresence>,
-
     document.getElementById("modal-root")
   );
 }
