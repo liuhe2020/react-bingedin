@@ -87,6 +87,10 @@ const Wrapper = styled.div`
     cursor: pointer;
     opacity: 0;
     transition: all 0.3;
+
+    @media (max-width: 768px) {
+      opacity: 1;
+    }
   }
 
   &:hover {

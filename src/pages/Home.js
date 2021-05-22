@@ -4,19 +4,25 @@ import MovieRow from "../components/MovieRow";
 import requests from "../components/Requests";
 
 function Home() {
+  const rows = [
+    { title: "Popular", getURL: requests.getPopular },
+    { title: "Top Rated", getURL: requests.getTopRated },
+    { title: "Action", getURL: requests.getAction },
+    { title: "Comedy", getURL: requests.getComedy },
+    { title: "Documentary", getURL: requests.getDocumentary },
+    { title: "Drama", getURL: requests.getDrama },
+    { title: "Horror", getURL: requests.getHorror },
+    { title: "Romance", getURL: requests.getRomance },
+    { title: "SciFi", getURL: requests.getSciFi },
+  ];
+
   return (
     <>
       <Banner />
       <RowContainer>
-        <MovieRow title={"Popular"} getURL={requests.getPopular} />
-        <MovieRow title={"Top Rated"} getURL={requests.getTopRated} />
-        <MovieRow title={"Action"} getURL={requests.getAction} />
-        <MovieRow title={"Comedy"} getURL={requests.getComedy} />
-        <MovieRow title={"Documentary"} getURL={requests.getDocumentary} />
-        <MovieRow title={"Drama"} getURL={requests.getDrama} />
-        <MovieRow title={"Horror"} getURL={requests.getHorror} />
-        <MovieRow title={"Romance"} getURL={requests.getRomance} />
-        <MovieRow title={"Sci-Fi"} getURL={requests.getSciFi} />
+        {rows.map((row) => (
+          <MovieRow key={row.title} title={row.title} getURL={row.getURL} />
+        ))}
       </RowContainer>
     </>
   );

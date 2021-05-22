@@ -47,11 +47,13 @@ export default Banner;
 
 const BannerSlider = styled(Slider)`
   height: 35.9vw;
+
   .slick-dots {
     bottom: -1.5vw;
 
     li {
       margin: 0;
+
       @media (min-width: 1920px) {
         margin: 0.5rem;
       }
@@ -63,6 +65,10 @@ const BannerSlider = styled(Slider)`
 
         @media (min-width: 1920px) {
           font-size: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+          font-size: 0.5rem;
         }
       }
     }

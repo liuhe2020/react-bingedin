@@ -1,10 +1,21 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import YouTube from "react-youtube";
 import axios from "./API";
 import { API_KEY } from "./Requests";
 
-function Trailer({ id }) {
+function Trailer({ id, setIsTrailer, setIsPlaying }) {
   const [trailer, setTrailer] = useState("");
+
+  // set options https://www.npmjs.com/package/react-youtube
+  const opts = {
+    playerVars: { autoplay: 1 },
+  };
+
+  // set state based on playback https://developers.google.com/youtube/iframe_api_reference#Events
+  const handleOnStateChange = (e) => {
+    e.data === 1 ? setIsPlaying(true) : setIsPlaying(false);
+  };
 
   useEffect(() => {
     async function getTrailer() {
@@ -20,13 +31,11 @@ function Trailer({ id }) {
   return (
     <PlayerContainer>
       <Player>
-        <iframe
-          width="853"
-          height="480"
-          src={`https://www.youtube.com/embed/${trailer}`}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          title="Embedded youtube"
+        <YouTube
+          videoId={trailer}
+          opts={opts}
+          onStateChange={handleOnStateChange}
+          onEnd={() => setIsTrailer(false)}
         />
       </Player>
     </PlayerContainer>
