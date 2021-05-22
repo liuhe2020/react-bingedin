@@ -25,7 +25,7 @@ function Banner() {
 
   // settings for react slick slider
   const settings = {
-    arrows: false,
+    arrows: true,
     dots: true,
     infinite: true,
     speed: 500,
