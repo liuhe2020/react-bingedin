@@ -16,7 +16,7 @@ function Home() {
     { title: "Drama", getURL: requests.getDrama },
     { title: "Family", getURL: requests.getFamily },
     { title: "Fantasy", getURL: requests.getFantasy },
-    { title: "getHistory", getURL: requests.getHistory },
+    { title: "History", getURL: requests.getHistory },
     { title: "Horror", getURL: requests.getHorror },
     { title: "Mystery", getURL: requests.getMystery },
     { title: "Romance", getURL: requests.getRomance },
