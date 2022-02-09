@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 function Loader() {
   return (
@@ -39,7 +39,7 @@ const LoaderContainer = styled.div`
   }
 
   div:after {
-    content: " ";
+    content: ' ';
     display: block;
     position: absolute;
     width: 7px;

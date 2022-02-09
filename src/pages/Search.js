@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "../components/API";
-import { API_KEY } from "../components/Requests";
-import MovieSinglePoster from "../components/MovieSinglePoster";
-import Loader from "../components/Loader";
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from '../components/API';
+import { API_KEY } from '../components/Requests';
+import MovieSinglePoster from '../components/MovieSinglePoster';
+import Loader from '../components/Loader';
 
 function Search({ submitTerm, page, setPage }) {
   const [movies, setMovies] = useState([]);
@@ -43,19 +43,6 @@ function Search({ submitTerm, page, setPage }) {
     setMovies([]);
     setMovieTotal(0);
   }, [submitTerm]);
-
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting) {
-  //         setPage((prev) => prev + 1);
-  //       }
-  //     },
-  //     { threshold: 1 }
-  //   );
-
-  //   observer.observe(bottomRef.current);
-  // }, [loading]);
 
   return (
     <SearchContainer>

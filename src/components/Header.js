@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import styled from "styled-components";
-import SearchIcon from "@material-ui/icons/Search";
-import QueuePlayNextIcon from "@material-ui/icons/QueuePlayNext";
+import { useState, useEffect } from 'react';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
+import SearchIcon from '@material-ui/icons/Search';
+import QueuePlayNextIcon from '@material-ui/icons/QueuePlayNext';
 
 function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
   const [navBar, setNavBar] = useState(false);
@@ -23,7 +23,7 @@ function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
       setSubmitTerm(term);
       setPage(1);
       // redirect to search page
-      history.push("/search");
+      history.push('/search');
     }
   };
 
@@ -33,25 +33,25 @@ function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
 
   // listening for scroll event to fire navBar state change
   useEffect(() => {
-    window.addEventListener("scroll", navTransition);
-    return () => window.removeEventListener("scroll", navTransition);
+    window.addEventListener('scroll', navTransition);
+    return () => window.removeEventListener('scroll', navTransition);
   }, []);
 
   // redirect to home page if term is empty/no input in search box
   useEffect(() => {
-    if (!term && pathname === "/search") {
-      history.push("/");
+    if (!term && pathname === '/search') {
+      history.push('/');
     }
   }, [history, term, pathname]);
 
   return (
     <NavContainer isScrolled={navBar}>
       <Nav>
-        <Link to="/">
-          <Logo src="/images/bingedin_logo.png" alt="bingedin_logo" />
+        <Link to='/'>
+          <Logo src='/images/bingedin_logo.png' alt='bingedin_logo' />
         </Link>
         <Menu>
-          <Link to="/watchlist">
+          <Link to='/watchlist'>
             <WrapQueuePlayNextIcon whileHover={{ scale: 1.2 }}>
               <QueuePlayNextIcon />
             </WrapQueuePlayNextIcon>
@@ -59,10 +59,10 @@ function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
           <StyledForm onSubmit={handleOnSubmit}>
             <input
               onChange={(e) => setTerm(e.target.value)}
-              type="text"
-              placeholder="Enter movie name"
+              type='text'
+              placeholder='Enter movie name'
             />
-            <WrapButton type="submit" whileHover={{ scale: 1.2 }}>
+            <WrapButton type='submit' whileHover={{ scale: 1.2 }}>
               <SearchIcon />
             </WrapButton>
           </StyledForm>
@@ -76,7 +76,7 @@ export default Header;
 
 const NavContainer = styled.div`
   // the state of navBar is passed in as props to set background color and blend mode
-  background-color: ${(props) => (props.isScrolled ? "#111" : "")};
+  background-color: ${(props) => (props.isScrolled ? '#111' : '')};
   position: fixed;
   top: 0;
   left: 0;

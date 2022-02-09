@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef, useContext } from "react";
-import ReactDom from "react-dom";
-import styled, { createGlobalStyle } from "styled-components";
-import { AnimatePresence, motion } from "framer-motion";
-import CancelIcon from "@material-ui/icons/Cancel";
-import StarRoundedIcon from "@material-ui/icons/StarRounded";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
-import axios from "./API";
-import { API_KEY } from "./Requests";
-import { GlobalContext } from "../context/GlobalState";
+import { useState, useEffect, useRef, useContext } from 'react';
+import ReactDom from 'react-dom';
+import styled, { createGlobalStyle } from 'styled-components';
+import { AnimatePresence, motion } from 'framer-motion';
+import CancelIcon from '@material-ui/icons/Cancel';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import axios from './API';
+import { API_KEY } from './Requests';
+import { GlobalContext } from '../context/GlobalState';
 
 function Modal({ open, id, onClose }) {
   const [movie, setMovie] = useState({});
@@ -61,7 +61,7 @@ function Modal({ open, id, onClose }) {
   // same as function above to exclude comma in rendered last item of array
   // in addition first filter through array to find items with key value pair {job: "Director"}
   const renderDirector = () => {
-    const directors = crew.filter((person) => person.job === "Director");
+    const directors = crew.filter((person) => person.job === 'Director');
     const director = directors.map((dir) =>
       directors.indexOf(dir) === directors.length - 1
         ? `${dir.name}`
@@ -107,6 +107,8 @@ function Modal({ open, id, onClose }) {
     }
   }, [open, id]);
 
+  console.log('modal');
+
   // use createPortal to append modal to body parent
   return ReactDom.createPortal(
     <AnimatePresence>
@@ -121,26 +123,26 @@ function Modal({ open, id, onClose }) {
               exit={{ opacity: 0 }}
             />
             <Container
-              initial={{ y: "100vh" }}
+              initial={{ y: '100vh' }}
               animate={{ y: 0 }}
-              exit={{ y: "100vh" }}
-              transition={{ type: "tween" }}
+              exit={{ y: '100vh' }}
+              transition={{ type: 'tween' }}
             >
               <Player>
                 <iframe
-                  width="853"
-                  height="480"
+                  width='853'
+                  height='480'
                   src={`https://www.youtube.com/embed/${video}`}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  frameBorder='0'
+                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
                   allowFullScreen
-                  title="Embedded youtube"
+                  title='Embedded youtube'
                 />
               </Player>
               <Detail>
                 <h1>{movie.title}</h1>
                 <Info>
-                  <StarRoundedIcon style={{ color: "#FFCA63" }} />
+                  <StarRoundedIcon style={{ color: '#FFCA63' }} />
                   <span>{movie.vote_average}</span>
                   <p>{`${movie.runtime} min`}</p>
                   <p>{movie.release_date}</p>
@@ -180,22 +182,22 @@ function Modal({ open, id, onClose }) {
                   <AnimatePresence>
                     {showAdded && (
                       <motion.p
-                        key="added"
-                        initial={{ x: "150px" }}
+                        key='added'
+                        initial={{ x: '150px' }}
                         animate={{ x: 0 }}
-                        exit={{ x: "150px" }}
-                        transition={{ type: "tween" }}
+                        exit={{ x: '150px' }}
+                        transition={{ type: 'tween' }}
                       >
                         Added to Watch List
                       </motion.p>
                     )}
                     {showRemoved && (
                       <motion.p
-                        key="removed"
-                        initial={{ x: "150px" }}
+                        key='removed'
+                        initial={{ x: '150px' }}
                         animate={{ x: 0 }}
-                        exit={{ x: "150px" }}
-                        transition={{ type: "tween" }}
+                        exit={{ x: '150px' }}
+                        transition={{ type: 'tween' }}
                       >
                         Removed from Watch List
                       </motion.p>
@@ -212,7 +214,7 @@ function Modal({ open, id, onClose }) {
         </>
       )}
     </AnimatePresence>,
-    document.getElementById("modal-root")
+    document.getElementById('modal-root')
   );
 }
 
@@ -223,11 +225,11 @@ export default Modal;
 const ScrollLock = createGlobalStyle`
   body{
     overflow-y: hidden;
-    margin-right: ${(props) => props.margin + "px"}
+    margin-right: ${(props) => props.margin + 'px'}
   }
 
   nav{
-    margin-right: ${(props) => props.margin + "px"}
+    margin-right: ${(props) => props.margin + 'px'}
   }
 `;
 

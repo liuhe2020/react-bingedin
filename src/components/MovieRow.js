@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 // react slick slider from npm
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import axios from "./API";
-import MovieSingleBackdrop from "./MovieSingleBackdrop";
+import axios from './API';
+import MovieSingleBackdrop from './MovieSingleBackdrop';
 
 function MovieRow(props) {
   const [movies, setMovies] = useState([]);

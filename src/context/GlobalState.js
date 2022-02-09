@@ -1,9 +1,9 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect } from 'react';
 
 // initial state for watch list
 const initialState = {
-  watchlist: localStorage.getItem("watchlist")
-    ? JSON.parse(localStorage.getItem("watchlist"))
+  watchlist: localStorage.getItem('watchlist')
+    ? JSON.parse(localStorage.getItem('watchlist'))
     : [],
 };
 
@@ -13,12 +13,12 @@ const GlobalContext = createContext(initialState);
 // reducer
 const reducer = (state, action) => {
   switch (action.type) {
-    case "ADD_WATCH_LIST":
+    case 'ADD_WATCH_LIST':
       return {
         ...state,
         watchlist: [action.payload, ...state.watchlist],
       };
-    case "REMOVE_WATCH_LIST":
+    case 'REMOVE_WATCH_LIST':
       return {
         ...state,
         watchlist: state.watchlist.filter(
@@ -36,15 +36,15 @@ const GlobalProvider = (props) => {
 
   // actions
   const addWatchList = (movie) => {
-    dispatch({ type: "ADD_WATCH_LIST", payload: movie });
+    dispatch({ type: 'ADD_WATCH_LIST', payload: movie });
   };
 
   const removeWatchList = (id) => {
-    dispatch({ type: "REMOVE_WATCH_LIST", payload: id });
+    dispatch({ type: 'REMOVE_WATCH_LIST', payload: id });
   };
 
   useEffect(() => {
-    localStorage.setItem("watchlist", JSON.stringify(state.watchlist));
+    localStorage.setItem('watchlist', JSON.stringify(state.watchlist));
   }, [state]);
 
   return (

@@ -2,6 +2,8 @@ bINGEdIN is a movie app where users can view infos and watch trailers of trendin
 \
 \
 Libraries used:
+\
+\
 
 - React Router
 - Axios
