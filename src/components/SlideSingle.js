@@ -1,6 +1,6 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Trailer from "./Trailer";
+import { useState } from 'react';
+import styled from 'styled-components';
+import Trailer from './Trailer';
 
 function SlideSingle({ movie }) {
   // isTrailer tracks when play trailer button is clicked
@@ -8,11 +8,11 @@ function SlideSingle({ movie }) {
   const [isTrailer, setIsTrailer] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const movieURL = "https://image.tmdb.org/t/p/w1280";
+  const movieURL = 'https://image.tmdb.org/t/p/w1280';
 
   // truncate movie description into excerpt, n = number of characters
   const truncate = (string, n) =>
-    string?.length > n ? string.substr(0, n - 1) + "..." : string;
+    string?.length > n ? string.substr(0, n - 1) + '...' : string;
 
   return (
     <Slide key={movie.id}>
@@ -24,7 +24,7 @@ function SlideSingle({ movie }) {
         />
       ) : (
         <img
-          loading="lazy"
+          loading='lazy'
           src={`${movieURL}${movie.backdrop_path}`}
           alt={movie?.title || movie?.name || movie?.original_title}
         />
@@ -63,14 +63,16 @@ const Info = styled.div`
   left: 4vw;
   top: 11vw;
   z-index: 1;
-  color: #ddd;
+  color: #fff;
 
   h1 {
     font-size: 2.5vw;
+    text-shadow: 1px 1px 1px #000;
   }
 
   p {
     font-size: 1.2vw;
+    text-shadow: 1px 1px 1px #000;
     margin-top: 1vw;
   }
 
@@ -82,7 +84,7 @@ const Info = styled.div`
     border-radius: 0.2vw;
     padding: 0.5vw 2vw;
     margin-top: 1.5vw;
-    color: #ddd;
+    color: #fff;
     background-color: rgba(50, 50, 50, 0.5);
     cursor: pointer;
   }

@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import YouTube from "react-youtube";
-import axios from "./API";
-import { API_KEY } from "./Requests";
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import YouTube from 'react-youtube';
+import axios from './API';
+import { API_KEY } from './Requests';
 
 function Trailer({ id, setIsTrailer, setIsPlaying }) {
-  const [trailer, setTrailer] = useState("");
+  const [trailer, setTrailer] = useState('');
 
   // set options https://www.npmjs.com/package/react-youtube
   const opts = {

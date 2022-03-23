@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import axios from "./API";
-import requests from "./Requests";
-import SlideSingle from "./SlideSingle";
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import axios from './API';
+import requests from './Requests';
+import SlideSingle from './SlideSingle';
 
 function Banner() {
   // use state to assign movies to setMovies state to be passed into JSX below

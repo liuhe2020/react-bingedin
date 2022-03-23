@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import axios from "../components/API";
-import { API_KEY } from "../components/Requests";
-import MovieSinglePoster from "../components/MovieSinglePoster";
-import Loader from "../components/Loader";
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import axios from '../components/API';
+import { API_KEY } from '../components/Requests';
+import MovieSinglePoster from '../components/MovieSinglePoster';
+import Loader from '../components/Loader';
 
 function Search({ submitTerm, page, setPage }) {
   const [movies, setMovies] = useState([]);

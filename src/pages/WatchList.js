@@ -1,7 +1,7 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import MovieSinglePoster from "../components/MovieSinglePoster";
-import { GlobalContext } from "../context/GlobalState";
+import { useContext } from 'react';
+import styled from 'styled-components';
+import MovieSinglePoster from '../components/MovieSinglePoster';
+import { GlobalContext } from '../context/GlobalState';
 
 function WatchList() {
   // get values from GlobalContext object

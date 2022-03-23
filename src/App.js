@@ -1,18 +1,23 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createGlobalStyle } from "styled-components";
-import Home from "./pages/Home";
-import WatchList from "./pages/WatchList";
-import Search from "./pages/Search";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop";
-import { GlobalProvider } from "./context/GlobalState";
+import { useState } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { createGlobalStyle } from 'styled-components';
+import Home from './pages/Home';
+import WatchList from './pages/WatchList';
+import Search from './pages/Search';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
+import { GlobalProvider } from './context/GlobalState';
 
 function App() {
   // states to be passed in to Header & Search components
+<<<<<<< HEAD
   const [term, setTerm] = useState("");
   const [submitTerm, setSubmitTerm] = useState("");
+=======
+  const [term, setTerm] = useState('');
+  const [submitTerm, setSubmitTerm] = useState('');
+>>>>>>> 6b1d0136be654bc8ec3d6b457c5546cd73d7cddd
   const [page, setPage] = useState(1);
 
   return (
@@ -28,11 +33,11 @@ function App() {
             setPage={setPage}
           />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/watchlist" component={WatchList} />
+            <Route exact path='/' component={Home} />
+            <Route path='/watchlist' component={WatchList} />
             <Route>
               <Search
-                path="/search"
+                path='/search'
                 submitTerm={submitTerm}
                 page={page}
                 setPage={setPage}

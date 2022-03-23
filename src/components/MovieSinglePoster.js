@@ -1,15 +1,15 @@
-import { useState, useContext } from "react";
-import styled from "styled-components";
-import { motion } from "framer-motion";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
-import Modal from "./Modal";
-import { GlobalContext } from "../context/GlobalState";
+import { useState, useContext } from 'react';
+import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import Modal from './Modal';
+import { GlobalContext } from '../context/GlobalState';
 
 function MovieSinglePoster({ id, poster, title, isButton }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // first part of movie URL from TMDB with image width of 185px
-  const movieBaseURL = "https://image.tmdb.org/t/p/w185";
+  const movieBaseURL = 'https://image.tmdb.org/t/p/w185';
 
   // get values from GlobalContext object
   const { removeWatchList } = useContext(GlobalContext);
@@ -44,7 +44,7 @@ const Wrapper = styled.div`
   height: 100%;
   overflow: hidden;
   // display movie title if doesn't have poster
-  color: ${(props) => (props.hasPoster ? "transparent" : "#999")};
+  color: ${(props) => (props.hasPoster ? 'transparent' : '#999')};
 
   div {
     position: absolute;
