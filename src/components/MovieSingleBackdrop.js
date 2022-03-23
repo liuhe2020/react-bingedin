@@ -1,12 +1,12 @@
-import { useState } from "react";
-import styled from "styled-components";
-import Modal from "./Modal";
+import { useState } from 'react';
+import styled from 'styled-components';
+import Modal from './Modal';
 
 function MovieSingleBackdrop({ id, poster, title }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // first part of movie URL from TMDB with image width of 300px
-  const movieBaseURL = "https://image.tmdb.org/t/p/w300";
+  const movieBaseURL = 'https://image.tmdb.org/t/p/w300';
 
   return (
     <Wrapper>

@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 function Footer() {
   return (
@@ -7,44 +7,44 @@ function Footer() {
       <div>
         <span>Powered by</span>
         <a
-          rel="noopener noreferrer"
-          target="_blank"
-          href="https://www.themoviedb.org/"
+          rel='noopener noreferrer'
+          target='_blank'
+          href='https://www.themoviedb.org/'
         >
-          <img src="./images/tmdb.svg" alt="tmdb_logo" />
+          <img src='./images/tmdb.svg' alt='tmdb_logo' />
         </a>
         <a
-          rel="noopener noreferrer"
-          target="_blank"
-          href="https://www.youtube.com/"
+          rel='noopener noreferrer'
+          target='_blank'
+          href='https://www.youtube.com/'
         >
-          <img src="./images/youtube.png" alt="youtube_logo" />
+          <img src='./images/youtube.png' alt='youtube_logo' />
         </a>
       </div>
       <ul>
-        <Link to="/">
+        <Link to='/'>
           <li>User Agreement</li>
         </Link>
-        <Link to="/">
+        <Link to='/'>
           <li>Terms of Use</li>
         </Link>
-        <Link to="/">
+        <Link to='/'>
           <li>Privacy Policy</li>
         </Link>
-        <Link to="/">
+        <Link to='/'>
           <li>Privacy Rights</li>
         </Link>
-        <Link to="/">
+        <Link to='/'>
           <li>Cookies Policy</li>
         </Link>
-        <Link to="/">
+        <Link to='/'>
           <li>Manage Preferences</li>
         </Link>
-        <Link to="/">
+        <Link to='/'>
           <li>Help Center</li>
         </Link>
       </ul>
-      <p>&#169; 2021 bINGEdIN</p>
+      <p>&#169; 2022 bINGEdIN</p>
     </FooterContainer>
   );
 }

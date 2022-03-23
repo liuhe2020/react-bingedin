@@ -10,7 +10,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import { GlobalProvider } from "./context/GlobalState";
 
 function App() {
-  // global states to be passed in to Header & Search components
+  // states to be passed in to Header & Search components
   const [term, setTerm] = useState("");
   const [submitTerm, setSubmitTerm] = useState("");
   const [page, setPage] = useState(1);

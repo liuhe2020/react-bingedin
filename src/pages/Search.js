@@ -44,19 +44,6 @@ function Search({ submitTerm, page, setPage }) {
     setMovieTotal(0);
   }, [submitTerm]);
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting) {
-  //         setPage((prev) => prev + 1);
-  //       }
-  //     },
-  //     { threshold: 1 }
-  //   );
-
-  //   observer.observe(bottomRef.current);
-  // }, [loading]);
-
   return (
     <SearchContainer>
       {pageTotal >= 1 ? (

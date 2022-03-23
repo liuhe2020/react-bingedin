@@ -8,11 +8,12 @@ import requests from "./Requests";
 import SlideSingle from "./SlideSingle";
 
 function Banner() {
-  // use state to assign movies to setMovies variable to be passed into JSX below
+  // use state to assign movies to setMovies state to be passed into JSX below
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     async function getData() {
+      // APIs from imported requests from Requests.js file
       const request = await axios.get(requests.getTrending);
       // get the ten random movies using a somewhat random algorithm in requested array
       const sortMovies = request.data.results.sort(() => 0.5 - Math.random());
