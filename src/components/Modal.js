@@ -107,7 +107,7 @@ export default function Modal({ open, id, onClose }) {
     }
   }, [open, id]);
 
-  // use createPortal to append modal to body parent
+  // use createPortal to append modal to the body with id 'modal-root'
   return ReactDom.createPortal(
     <AnimatePresence>
       {open && (
@@ -141,7 +141,8 @@ export default function Modal({ open, id, onClose }) {
                 <h1>{movie.title}</h1>
                 <Info>
                   <StarRoundedIcon style={{ color: '#FFCA63' }} />
-                  <span>{movie.vote_average}</span>
+                  {/* round rating to 1 decimal */}
+                  <span>{Math.round(movie.vote_average * 10) / 10}</span>
                   <p>{`${movie.runtime} min`}</p>
                   <p>{movie.release_date}</p>
                   {isWatchList ? (
