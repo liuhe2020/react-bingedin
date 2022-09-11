@@ -7,7 +7,7 @@ import axios from './API';
 import requests from './Requests';
 import SlideSingle from './SlideSingle';
 
-function Banner() {
+export default function Banner() {
   // use state to assign movies to setMovies state to be passed into JSX below
   const [movies, setMovies] = useState([]);
 
@@ -43,8 +43,6 @@ function Banner() {
     </BannerSlider>
   );
 }
-
-export default Banner;
 
 const BannerSlider = styled(Slider)`
   height: 35.9vw;

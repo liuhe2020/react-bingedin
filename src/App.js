@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { GlobalProvider } from './context/GlobalState';
 
-function App() {
+export default function App() {
   // states to be passed in to Header & Search components
   const [term, setTerm] = useState('');
   const [submitTerm, setSubmitTerm] = useState('');
@@ -46,8 +46,6 @@ function App() {
     </GlobalProvider>
   );
 }
-
-export default App;
 
 const GlobalStyle = createGlobalStyle`
   * {

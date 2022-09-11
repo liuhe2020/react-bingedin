@@ -5,7 +5,13 @@ import styled from 'styled-components';
 import SearchIcon from '@material-ui/icons/Search';
 import QueuePlayNextIcon from '@material-ui/icons/QueuePlayNext';
 
-function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
+export default function Header({
+  term,
+  setTerm,
+  submitTerm,
+  setSubmitTerm,
+  setPage,
+}) {
   const [navBar, setNavBar] = useState(false);
 
   let history = useHistory();
@@ -71,8 +77,6 @@ function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
     </NavContainer>
   );
 }
-
-export default Header;
 
 const NavContainer = styled.div`
   // the state of navBar is passed in as props to set background color and blend mode

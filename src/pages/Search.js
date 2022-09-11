@@ -5,7 +5,7 @@ import { API_KEY } from '../components/Requests';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import Loader from '../components/Loader';
 
-function Search({ submitTerm, page, setPage }) {
+export default function Search({ submitTerm, page, setPage }) {
   const [movies, setMovies] = useState([]);
   const [pageTotal, setPageTotal] = useState(1);
   const [movieTotal, setMovieTotal] = useState(0);
@@ -77,8 +77,6 @@ function Search({ submitTerm, page, setPage }) {
     </SearchContainer>
   );
 }
-
-export default Search;
 
 const SearchContainer = styled.div`
   width: 100%;

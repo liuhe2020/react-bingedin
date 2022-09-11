@@ -9,7 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import axios from './API';
 import MovieSingleBackdrop from './MovieSingleBackdrop';
 
-function MovieRow(props) {
+export default function MovieRow(props) {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -86,8 +86,6 @@ function MovieRow(props) {
     </RowContainer>
   );
 }
-
-export default MovieRow;
 
 const RowContainer = styled.div`
   overflow: hidden;

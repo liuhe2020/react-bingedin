@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
 
-function MovieSingleBackdrop({ id, poster, title }) {
+export default function MovieSingleBackdrop({ id, poster, title }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // first part of movie URL from TMDB with image width of 300px
@@ -22,8 +22,6 @@ function MovieSingleBackdrop({ id, poster, title }) {
     </Wrapper>
   );
 }
-
-export default MovieSingleBackdrop;
 
 const Wrapper = styled.div`
   position: relative;

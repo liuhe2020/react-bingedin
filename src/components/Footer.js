@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-function Footer() {
+export default function Footer() {
+  const today = new Date();
+  const year = today.getFullYear();
+
   return (
     <FooterContainer>
       <div>
@@ -44,12 +47,10 @@ function Footer() {
           <li>Help Center</li>
         </Link>
       </ul>
-      <p>&#169; 2022 bINGEdIN</p>
+      <p>&#169; {year} bINGEdIN</p>
     </FooterContainer>
   );
 }
-
-export default Footer;
 
 const FooterContainer = styled.div`
   margin-top: 80px;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Trailer from './Trailer';
 
-function SlideSingle({ movie }) {
+export default function SlideSingle({ movie }) {
   // isTrailer tracks when play trailer button is clicked
   // if yes, render trailer iframe, else render image
   const [isTrailer, setIsTrailer] = useState(false);
@@ -42,8 +42,6 @@ function SlideSingle({ movie }) {
     </Slide>
   );
 }
-
-export default SlideSingle;
 
 const Slide = styled.div`
   position: relative;

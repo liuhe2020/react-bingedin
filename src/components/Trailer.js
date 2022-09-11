@@ -4,7 +4,7 @@ import YouTube from 'react-youtube';
 import axios from './API';
 import { API_KEY } from './Requests';
 
-function Trailer({ id, setIsTrailer, setIsPlaying }) {
+export default function Trailer({ id, setIsTrailer, setIsPlaying }) {
   const [trailer, setTrailer] = useState('');
 
   // set options https://www.npmjs.com/package/react-youtube
@@ -41,8 +41,6 @@ function Trailer({ id, setIsTrailer, setIsPlaying }) {
     </PlayerContainer>
   );
 }
-
-export default Trailer;
 
 const PlayerContainer = styled.div`
   height: 35.9vw;

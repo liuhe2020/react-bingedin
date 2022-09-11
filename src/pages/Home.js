@@ -3,7 +3,7 @@ import Banner from '../components/Banner';
 import MovieRow from '../components/MovieRow';
 import requests from '../components/Requests';
 
-function Home() {
+export default function Home() {
   const rows = [
     { title: 'Popular', getURL: requests.getPopular },
     { title: 'Top Rated', getURL: requests.getTopRated },
@@ -37,8 +37,6 @@ function Home() {
     </>
   );
 }
-
-export default Home;
 
 const RowContainer = styled.div`
   margin-bottom: 3vw;

@@ -10,7 +10,7 @@ import axios from './API';
 import { API_KEY } from './Requests';
 import { GlobalContext } from '../context/GlobalState';
 
-function Modal({ open, id, onClose }) {
+export default function Modal({ open, id, onClose }) {
   const [movie, setMovie] = useState({});
   const [video, setVideo] = useState({});
   const [genres, setGenres] = useState([]);
@@ -106,8 +106,6 @@ function Modal({ open, id, onClose }) {
       getCredits();
     }
   }, [open, id]);
-
-  console.log('modal');
 
   // use createPortal to append modal to body parent
   return ReactDom.createPortal(
@@ -217,8 +215,6 @@ function Modal({ open, id, onClose }) {
     document.getElementById('modal-root')
   );
 }
-
-export default Modal;
 
 // create a global styled for the modal to lock scroll
 // offset margin right for the missing scrollbar so page doesn't expand/jump

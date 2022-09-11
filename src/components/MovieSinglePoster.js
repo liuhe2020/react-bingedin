@@ -5,7 +5,7 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import Modal from './Modal';
 import { GlobalContext } from '../context/GlobalState';
 
-function MovieSinglePoster({ id, poster, title, isButton }) {
+export default function MovieSinglePoster({ id, poster, title, isButton }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   // first part of movie URL from TMDB with image width of 185px
@@ -35,8 +35,6 @@ function MovieSinglePoster({ id, poster, title, isButton }) {
     </Wrapper>
   );
 }
-
-export default MovieSinglePoster;
 
 const Wrapper = styled.div`
   cursor: pointer;

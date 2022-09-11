@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import { GlobalContext } from '../context/GlobalState';
 
-function WatchList() {
+export default function WatchList() {
   // get values from GlobalContext object
   const { watchlist } = useContext(GlobalContext);
 
@@ -33,8 +33,6 @@ function WatchList() {
     </ListContainer>
   );
 }
-
-export default WatchList;
 
 const ListContainer = styled.div`
   width: 100%;

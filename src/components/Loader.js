@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function Loader() {
+export default function Loader() {
   return (
     <Container>
       <LoaderContainer>
@@ -16,8 +16,6 @@ function Loader() {
     </Container>
   );
 }
-
-export default Loader;
 
 const Container = styled.div`
   display: flex;
