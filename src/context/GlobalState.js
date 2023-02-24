@@ -2,9 +2,7 @@ import { createContext, useReducer, useEffect } from 'react';
 
 // initial state for watch list
 const initialState = {
-  watchlist: localStorage.getItem('watchlist')
-    ? JSON.parse(localStorage.getItem('watchlist'))
-    : [],
+  watchlist: localStorage.getItem('watchlist') ? JSON.parse(localStorage.getItem('watchlist')) : [],
 };
 
 // create context
@@ -21,9 +19,7 @@ const reducer = (state, action) => {
     case 'REMOVE_WATCH_LIST':
       return {
         ...state,
-        watchlist: state.watchlist.filter(
-          (movie) => movie.id !== action.payload
-        ),
+        watchlist: state.watchlist.filter((movie) => movie.id !== action.payload),
       };
     default:
       return state;
@@ -47,15 +43,7 @@ const GlobalProvider = (props) => {
     localStorage.setItem('watchlist', JSON.stringify(state.watchlist));
   }, [state]);
 
-  return (
-    <GlobalContext.Provider
-      value={{ watchlist: state.watchlist, addWatchList, removeWatchList }}
-    >
-      {props.children}
-    </GlobalContext.Provider>
-  );
+  return <GlobalContext.Provider value={{ watchlist: state.watchlist, addWatchList, removeWatchList }}>{props.children}</GlobalContext.Provider>;
 };
 
-export { GlobalProvider };
-
-export { GlobalContext };
+export { GlobalProvider, GlobalContext };

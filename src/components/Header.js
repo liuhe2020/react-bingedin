@@ -2,16 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import SearchIcon from '@material-ui/icons/Search';
-import QueuePlayNextIcon from '@material-ui/icons/QueuePlayNext';
+import SearchIcon from '@mui/icons-material/Search';
+import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 
-export default function Header({
-  term,
-  setTerm,
-  submitTerm,
-  setSubmitTerm,
-  setPage,
-}) {
+export default function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
   const [navBar, setNavBar] = useState(false);
 
   let history = useHistory();
@@ -34,8 +28,7 @@ export default function Header({
   };
 
   // if scrolled down 70px, change state of navBar
-  const navTransition = () =>
-    window.scrollY > 70 ? setNavBar(true) : setNavBar(false);
+  const navTransition = () => (window.scrollY > 70 ? setNavBar(true) : setNavBar(false));
 
   // listening for scroll event to fire navBar state change
   useEffect(() => {
@@ -63,11 +56,7 @@ export default function Header({
             </WrapQueuePlayNextIcon>
           </Link>
           <StyledForm onSubmit={handleOnSubmit}>
-            <input
-              onChange={(e) => setTerm(e.target.value)}
-              type='text'
-              placeholder='Enter movie name'
-            />
+            <input onChange={(e) => setTerm(e.target.value)} type='text' placeholder='Enter movie name' />
             <WrapButton type='submit' whileHover={{ scale: 1.2 }}>
               <SearchIcon />
             </WrapButton>

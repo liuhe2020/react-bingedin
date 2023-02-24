@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import Modal from './Modal';
 import { GlobalContext } from '../context/GlobalState';
 
@@ -16,18 +16,12 @@ export default function MovieSinglePoster({ id, poster, title, isButton }) {
 
   return (
     <Wrapper hasPoster={poster}>
-      <img
-        src={poster ? `${movieBaseURL}${poster}` : `./images/img_unavail.jpg`}
-        alt={title}
-      />
+      <img src={poster ? `${movieBaseURL}${poster}` : `./images/img_unavail.jpg`} alt={title} />
       <div onClick={() => setModalOpen(true)}>
         <span>{title}</span>
       </div>
       {isButton && (
-        <motion.button
-          whileHover={{ scale: 1.2 }}
-          onClick={() => removeWatchList(id)}
-        >
+        <motion.button whileHover={{ scale: 1.2 }} onClick={() => removeWatchList(id)}>
           <RemoveCircleIcon />
         </motion.button>
       )}

@@ -2,10 +2,10 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import ReactDom from 'react-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
-import CancelIcon from '@material-ui/icons/Cancel';
-import StarRoundedIcon from '@material-ui/icons/StarRounded';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import axios from './API';
 import { API_KEY } from './Requests';
 import { GlobalContext } from '../context/GlobalState';
@@ -23,8 +23,7 @@ export default function Modal({ open, id, onClose }) {
   const [showRemoved, setShowRemoved] = useState(false);
 
   // get values from GlobalContext object
-  const { addWatchList, removeWatchList, watchlist } =
-    useContext(GlobalContext);
+  const { addWatchList, removeWatchList, watchlist } = useContext(GlobalContext);
 
   // check if movie exists already in watchlist
   const isWatchList = watchlist.find((movie) => movie.id === id) ? true : false;
@@ -53,20 +52,13 @@ export default function Modal({ open, id, onClose }) {
   const modalBackdropMargin = window.innerWidth - document.body.offsetWidth;
 
   // function to return mapped items, if item is last of array then exclude comma
-  const renderItem = (arr) =>
-    arr.map((item) =>
-      arr.indexOf(item) === arr.length - 1 ? `${item.name}` : `${item.name}, `
-    );
+  const renderItem = (arr) => arr.map((item) => (arr.indexOf(item) === arr.length - 1 ? `${item.name}` : `${item.name}, `));
 
   // same as function above to exclude comma in rendered last item of array
   // in addition first filter through array to find items with key value pair {job: "Director"}
   const renderDirector = () => {
     const directors = crew.filter((person) => person.job === 'Director');
-    const director = directors.map((dir) =>
-      directors.indexOf(dir) === directors.length - 1
-        ? `${dir.name}`
-        : `${dir.name}, `
-    );
+    const director = directors.map((dir) => (directors.indexOf(dir) === directors.length - 1 ? `${dir.name}` : `${dir.name}, `));
     return director;
   };
 
@@ -74,9 +66,7 @@ export default function Modal({ open, id, onClose }) {
     // run async function only if modal opens to prevent making unnecessary API calls
     if (open) {
       async function getMovie() {
-        const { data } = await axios.get(
-          `/movie/${id}?api_key=${API_KEY}&language=en-US`
-        );
+        const { data } = await axios.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
         setMovie(data);
         setGenres(data.genres);
         setCompany(data.production_companies);
@@ -84,17 +74,13 @@ export default function Modal({ open, id, onClose }) {
       }
 
       async function getVideo() {
-        const { data } = await axios.get(
-          `/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
-        );
+        const { data } = await axios.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
         setVideo(data.results[0]?.key);
         return data;
       }
 
       async function getCredits() {
-        const { data } = await axios.get(
-          `/movie/${id}/credits?api_key=${API_KEY}&language=en-US`
-        );
+        const { data } = await axios.get(`/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
         // get first 10 members of cast
         setCast(data.cast.slice(0, 10));
         setCrew(data.crew);
@@ -113,19 +99,8 @@ export default function Modal({ open, id, onClose }) {
       {open && (
         <>
           <ModalContainer>
-            <Overlay
-              ref={modalRef}
-              onClick={closeModal}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-            <Container
-              initial={{ y: '100vh' }}
-              animate={{ y: 0 }}
-              exit={{ y: '100vh' }}
-              transition={{ type: 'tween' }}
-            >
+            <Overlay ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+            <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
               <Player>
                 <iframe
                   width='853'
@@ -180,24 +155,12 @@ export default function Modal({ open, id, onClose }) {
                 <Toast>
                   <AnimatePresence>
                     {showAdded && (
-                      <motion.p
-                        key='added'
-                        initial={{ x: '150px' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '150px' }}
-                        transition={{ type: 'tween' }}
-                      >
+                      <motion.p key='added' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
                         Added to Watch List
                       </motion.p>
                     )}
                     {showRemoved && (
-                      <motion.p
-                        key='removed'
-                        initial={{ x: '150px' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '150px' }}
-                        transition={{ type: 'tween' }}
-                      >
+                      <motion.p key='removed' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
                         Removed from Watch List
                       </motion.p>
                     )}
