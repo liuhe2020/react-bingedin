@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,7 +8,7 @@ import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 export default function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
   const [navBar, setNavBar] = useState(false);
 
-  let history = useHistory();
+  let history = useNavigate();
   const { pathname } = useLocation();
 
   // setTerm is passed in on the onChange of input to watch the state of input field

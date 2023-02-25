@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Home from './pages/Home';
 import WatchList from './pages/WatchList';
@@ -16,34 +16,19 @@ export default function App() {
   const [page, setPage] = useState(1);
 
   return (
-    <GlobalProvider>
-      <Router>
-        <>
-          <ScrollToTop />
-          <Header
-            term={term}
-            setTerm={setTerm}
-            submitTerm={submitTerm}
-            setSubmitTerm={setSubmitTerm}
-            setPage={setPage}
-          />
-          <Switch>
-            <Route exact path='/' component={Home} />
-            <Route path='/watchlist' component={WatchList} />
-            <Route>
-              <Search
-                path='/search'
-                submitTerm={submitTerm}
-                page={page}
-                setPage={setPage}
-              />
-            </Route>
-          </Switch>
-          <Footer />
-          <GlobalStyle />
-        </>
-      </Router>
-    </GlobalProvider>
+    <BrowserRouter>
+      <GlobalProvider>
+        <ScrollToTop />
+        <Header term={term} setTerm={setTerm} submitTerm={submitTerm} setSubmitTerm={setSubmitTerm} setPage={setPage} />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/watchlist' element={<WatchList />} />
+          <Route path='/search-result' element={<Search submitTerm={submitTerm} page={page} setPage={setPage} />} />
+        </Routes>
+        <Footer />
+        <GlobalStyle />
+      </GlobalProvider>
+    </BrowserRouter>
   );
 }
 

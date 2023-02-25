@@ -21,9 +21,7 @@ export default function Search({ submitTerm, page, setPage }) {
 
       const getSearch = async () => {
         try {
-          const { data } = await axios.get(
-            `/search/movie?api_key=${API_KEY}&language=en-US&query=${submitTerm}&page=${page}`
-          );
+          const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${submitTerm}&page=${page}`);
 
           // merge new fetched movies into existing ones to form a single array for render
           setMovies((prev) => [...prev, ...data.results]);
@@ -53,27 +51,15 @@ export default function Search({ submitTerm, page, setPage }) {
           </p>
           <ResultContainer>
             {movies.map((movie, index) => (
-              <MovieSinglePoster
-                key={index}
-                id={movie.id}
-                poster={movie.poster_path}
-                title={movie.title || movie.name}
-              />
+              <MovieSinglePoster key={index} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />
             ))}
           </ResultContainer>
         </>
       ) : (
-        <p>
-          Your search for "{submitTerm}" did not have any matches. Please try a
-          different keyword.
-        </p>
+        <p>Your search for "{submitTerm}" did not have any matches. Please try a different keyword.</p>
       )}
       {loading && <Loader />}
-      {page < pageTotal && (
-        <LoadButton onClick={() => setPage((prev) => prev + 1)}>
-          Load More
-        </LoadButton>
-      )}
+      {page < pageTotal && <LoadButton onClick={() => setPage((prev) => prev + 1)}>Load More</LoadButton>}
     </SearchContainer>
   );
 }
@@ -104,38 +90,23 @@ const ResultContainer = styled.div`
 
   // width calculated based on number of images and taking into account of grid gap
   @media (min-width: 251px) {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(100px, calc((100% - 5px) / 2))
-    );
+    grid-template-columns: repeat(auto-fit, minmax(100px, calc((100% - 5px) / 2)));
   }
 
   @media (min-width: 451px) {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(100px, calc((100% - 10px) / 3))
-    );
+    grid-template-columns: repeat(auto-fit, minmax(100px, calc((100% - 10px) / 3)));
   }
 
   @media (min-width: 601px) {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(120px, calc((100% - 15px) / 4))
-    );
+    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 15px) / 4)));
   }
 
   @media (min-width: 769px) {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(120px, calc((100% - 20px) / 5))
-    );
+    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 20px) / 5)));
   }
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(120px, calc((100% - 30px) / 7))
-    );
+    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 30px) / 7)));
   }
 `;
 
