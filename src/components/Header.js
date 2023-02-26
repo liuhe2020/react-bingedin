@@ -1,31 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 
-export default function Header({ term, setTerm, submitTerm, setSubmitTerm, setPage }) {
+export default function Header({ term, setTerm, setPage }) {
   const [navBar, setNavBar] = useState(false);
-
-  let history = useNavigate();
+  const inputRef = useRef();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
-
-  // setTerm is passed in on the onChange of input to watch the state of input field
-  // submitTerm is then set equal to term to fire the fetch function in useEffect
-  // useRef or name.value or setting state of term in a function does not work
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-    // prevent consecutive search of the same search term
-    if (term === submitTerm) {
-      return;
-    } else {
-      setSubmitTerm(term);
-      setPage(1);
-      // redirect to search page
-      history.push('/search');
-    }
-  };
 
   // if scrolled down 70px, change state of navBar
   const navTransition = () => (window.scrollY > 70 ? setNavBar(true) : setNavBar(false));
@@ -37,11 +21,16 @@ export default function Header({ term, setTerm, submitTerm, setSubmitTerm, setPa
   }, []);
 
   // redirect to home page if term is empty/no input in search box
-  useEffect(() => {
-    if (!term && pathname === '/search') {
-      history.push('/');
-    }
-  }, [history, term, pathname]);
+  const handleSearch = (e) => {
+    setTerm(e.target.value);
+    if (pathname !== '/search') navigate('/search');
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setTerm(inputRef.current.value);
+    if (pathname !== '/search') navigate('/search');
+  };
 
   return (
     <NavContainer isScrolled={navBar}>
@@ -51,14 +40,14 @@ export default function Header({ term, setTerm, submitTerm, setSubmitTerm, setPa
         </Link>
         <Menu>
           <Link to='/watchlist'>
-            <WrapQueuePlayNextIcon whileHover={{ scale: 1.2 }}>
+            <WrapQueuePlayNextIcon whileHover={{ scale: 1.1 }}>
               <QueuePlayNextIcon />
             </WrapQueuePlayNextIcon>
           </Link>
-          <StyledForm onSubmit={handleOnSubmit}>
-            <input onChange={(e) => setTerm(e.target.value)} type='text' placeholder='Enter movie name' />
-            <WrapButton type='submit' whileHover={{ scale: 1.2 }}>
-              <SearchIcon />
+          <StyledForm onSubmit={(e) => e.preventDefault()}>
+            <input ref={inputRef} onChange={handleSearch} type='text' placeholder='Search' value={term} />
+            <WrapButton whileHover={{ scale: 1.1 }}>
+              <SearchIcon onClick={handleClick} />
             </WrapButton>
           </StyledForm>
         </Menu>

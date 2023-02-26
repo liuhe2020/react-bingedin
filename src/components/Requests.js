@@ -2,7 +2,6 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 
 const requests = {
   getTrending: `/trending/movie/week?api_key=${API_KEY}&language=en-us`,
-
   getPopular: `/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc`,
   getTopRated: `/movie/top_rated?api_key=${API_KEY}&language=en-us`,
   getAction: `/discover/movie?api_key=${API_KEY}&with_genres=28`,

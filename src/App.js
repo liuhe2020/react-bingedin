@@ -12,18 +12,17 @@ import { GlobalProvider } from './context/GlobalState';
 export default function App() {
   // states to be passed in to Header & Search components
   const [term, setTerm] = useState('');
-  const [submitTerm, setSubmitTerm] = useState('');
   const [page, setPage] = useState(1);
 
   return (
     <BrowserRouter>
       <GlobalProvider>
         <ScrollToTop />
-        <Header term={term} setTerm={setTerm} submitTerm={submitTerm} setSubmitTerm={setSubmitTerm} setPage={setPage} />
+        <Header term={term} setTerm={setTerm} setPage={setPage} />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/watchlist' element={<WatchList />} />
-          <Route path='/search-result' element={<Search submitTerm={submitTerm} page={page} setPage={setPage} />} />
+          <Route path='/search' element={<Search term={term} page={page} setPage={setPage} />} />
         </Routes>
         <Footer />
         <GlobalStyle />

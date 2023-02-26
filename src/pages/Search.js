@@ -5,61 +5,74 @@ import { API_KEY } from '../components/Requests';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import Loader from '../components/Loader';
 
-export default function Search({ submitTerm, page, setPage }) {
+export default function Search({ term, page, setPage }) {
   const [movies, setMovies] = useState([]);
   const [pageTotal, setPageTotal] = useState(1);
   const [movieTotal, setMovieTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  // fetch data everytime a search is submitted or the page number changes
-  // page number changes when load more button click event occurs
+  // fetch data at search term change
   useEffect(() => {
-    // prevent fetching at initial load since submitTerm is empty
-    if (submitTerm) {
-      // setLoading to show Loader animation
-      setLoading(true);
+    if (!term) {
+      setMovies([]);
+      setMovieTotal(0);
+      setPageTotal(1);
+      return;
+    } // prevent fetching at initial load since term is empty
 
-      const getSearch = async () => {
-        try {
-          const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${submitTerm}&page=${page}`);
+    setLoading(true);
 
-          // merge new fetched movies into existing ones to form a single array for render
-          setMovies((prev) => [...prev, ...data.results]);
-          setMovieTotal(data.total_results);
-          setPageTotal(data.total_pages);
-          setLoading(false);
-        } catch (err) {
-          console.error(err);
-        }
-      };
+    const getSearch = async () => {
+      const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${term}&page=1`);
+      // setMovies((prev) => [...prev, ...data.results]);
+      setMovies(data.results);
+      setMovieTotal(data.total_results);
+      setPageTotal(data.total_pages);
+      setLoading(false);
+    };
+
+    const timer = setTimeout(() => {
       getSearch();
-    }
-  }, [submitTerm, page]);
+    }, 1000);
 
+    return () => clearTimeout(timer);
+  }, [term]);
+
+  // fetch next page when user clicks load more button
   useEffect(() => {
-    // reset movies array when a new search is submitted
-    setMovies([]);
-    setMovieTotal(0);
-  }, [submitTerm]);
+    if (page === 1) return;
+
+    setLoading(true);
+
+    const getNextPage = async () => {
+      const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${term}&page=${page}`);
+      setMovies((prev) => [...prev, ...data.results]);
+      setLoading(false);
+    };
+
+    getNextPage();
+  }, [page]);
 
   return (
     <SearchContainer>
-      {pageTotal >= 1 ? (
+      {!term ? (
+        <p>Start your search by typing into the search box.</p>
+      ) : movies.length === 0 ? (
+        <p>Your search for "{term}" did not have any matches. Please try a different keyword.</p>
+      ) : (
         <>
           <p>
-            Your search for "{submitTerm}" has {movieTotal} results.
+            Your search for "{term}" has {movieTotal} results.
           </p>
           <ResultContainer>
             {movies.map((movie, index) => (
               <MovieSinglePoster key={index} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />
             ))}
           </ResultContainer>
+          {loading && <Loader />}
+          {page < pageTotal && <LoadButton onClick={() => setPage((prev) => prev + 1)}>Load More</LoadButton>}
         </>
-      ) : (
-        <p>Your search for "{submitTerm}" did not have any matches. Please try a different keyword.</p>
       )}
-      {loading && <Loader />}
-      {page < pageTotal && <LoadButton onClick={() => setPage((prev) => prev + 1)}>Load More</LoadButton>}
     </SearchContainer>
   );
 }
