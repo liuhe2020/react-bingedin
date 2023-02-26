@@ -6,8 +6,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import axios from './API';
-import { API_KEY } from './Requests';
+import { tmdbApi, API_KEY } from '../api/api';
 import { GlobalContext } from '../context/GlobalState';
 
 export default function Modal({ open, id, onClose }) {
@@ -66,7 +65,7 @@ export default function Modal({ open, id, onClose }) {
     // run async function only if modal opens to prevent making unnecessary API calls
     if (open) {
       async function getMovie() {
-        const { data } = await axios.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
+        const { data } = await tmdbApi.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
         setMovie(data);
         setGenres(data.genres);
         setCompany(data.production_companies);
@@ -74,13 +73,13 @@ export default function Modal({ open, id, onClose }) {
       }
 
       async function getVideo() {
-        const { data } = await axios.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
+        const { data } = await tmdbApi.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
         setVideo(data.results[0]?.key);
         return data;
       }
 
       async function getCredits() {
-        const { data } = await axios.get(`/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
+        const { data } = await tmdbApi.get(`/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
         // get first 10 members of cast
         setCast(data.cast.slice(0, 10));
         setCrew(data.crew);

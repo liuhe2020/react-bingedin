@@ -1,68 +1,61 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import axios from '../components/API';
-import { API_KEY } from '../components/Requests';
+import { tmdbApi, API_KEY } from '../api/api';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import Loader from '../components/Loader';
 
-export default function Search({ term, page, setPage }) {
+export default function Search({ debouncedTerm, page, setPage }) {
   const [movies, setMovies] = useState([]);
   const [pageTotal, setPageTotal] = useState(1);
   const [movieTotal, setMovieTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  // fetch data at search term change
+  // fetch data at search debouncedTerm change
   useEffect(() => {
-    if (!term) {
+    if (!debouncedTerm) {
       setMovies([]);
       setMovieTotal(0);
       setPageTotal(1);
       return;
-    } // prevent fetching at initial load since term is empty
+    } // prevent fetching at initial load since debouncedTerm is empty
 
     setLoading(true);
 
     const getSearch = async () => {
-      const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${term}&page=1`);
-      // setMovies((prev) => [...prev, ...data.results]);
+      const { data } = await tmdbApi.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=1`);
       setMovies(data.results);
       setMovieTotal(data.total_results);
       setPageTotal(data.total_pages);
       setLoading(false);
     };
-
-    const timer = setTimeout(() => {
-      getSearch();
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [term]);
+    getSearch();
+  }, [debouncedTerm]);
 
   // fetch next page when user clicks load more button
-  useEffect(() => {
-    if (page === 1) return;
+  // useEffect(() => {
+  //   if (page === 1) return;
 
-    setLoading(true);
+  //   setLoading(true);
 
-    const getNextPage = async () => {
-      const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${term}&page=${page}`);
-      setMovies((prev) => [...prev, ...data.results]);
-      setLoading(false);
-    };
+  //   const getNextPage = async () => {
+  //     const { data } = await axios.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=${page}`);
+  //     setMovies((prev) => [...prev, ...data.results]);
+  //     setLoading(false);
+  //   };
 
-    getNextPage();
-  }, [page]);
+  //   getNextPage();
+  // }, [debouncedTerm, page]);
 
   return (
     <SearchContainer>
-      {!term ? (
+      {!debouncedTerm ? (
         <p>Start your search by typing into the search box.</p>
       ) : movies.length === 0 ? (
-        <p>Your search for "{term}" did not have any matches. Please try a different keyword.</p>
+        <p>Your search for "{debouncedTerm}" did not have any matches. Please try a different keyword.</p>
       ) : (
         <>
           <p>
-            Your search for "{term}" has {movieTotal} results.
+            Your search for "{debouncedTerm}" has {movieTotal} results.
           </p>
           <ResultContainer>
             {movies.map((movie, index) => (

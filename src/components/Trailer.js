@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import YouTube from 'react-youtube';
-import axios from './API';
-import { API_KEY } from './Requests';
+import { tmdbApi, API_KEY } from '../api/api';
 
 export default function Trailer({ id, setIsTrailer, setIsPlaying }) {
   const [trailer, setTrailer] = useState('');
@@ -19,9 +18,7 @@ export default function Trailer({ id, setIsTrailer, setIsPlaying }) {
 
   useEffect(() => {
     async function getTrailer() {
-      const { data } = await axios.get(
-        `/movie/${id}/videos?api_key=${API_KEY}&language=en-US`
-      );
+      const { data } = await tmdbApi.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
       setTrailer(data.results[0]?.key);
       return data;
     }
@@ -31,12 +28,7 @@ export default function Trailer({ id, setIsTrailer, setIsPlaying }) {
   return (
     <PlayerContainer>
       <Player>
-        <YouTube
-          videoId={trailer}
-          opts={opts}
-          onStateChange={handleOnStateChange}
-          onEnd={() => setIsTrailer(false)}
-        />
+        <YouTube videoId={trailer} opts={opts} onStateChange={handleOnStateChange} onEnd={() => setIsTrailer(false)} />
       </Player>
     </PlayerContainer>
   );

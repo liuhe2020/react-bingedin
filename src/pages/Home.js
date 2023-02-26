@@ -1,28 +1,28 @@
 import styled from 'styled-components';
 import Banner from '../components/Banner';
 import MovieRow from '../components/MovieRow';
-import requests from '../components/Requests';
+import { requests } from '../api/api';
 
 const rows = [
-  { title: 'Popular', getURL: requests.getPopular },
-  { title: 'Top Rated', getURL: requests.getTopRated },
-  { title: 'Action', getURL: requests.getAction },
-  { title: 'Adventure', getURL: requests.getAdventure },
-  { title: 'Animation', getURL: requests.getAnimation },
-  { title: 'Comedy', getURL: requests.getComedy },
-  { title: 'Crime', getURL: requests.getCrime },
-  { title: 'Documentary', getURL: requests.getDocumentary },
-  { title: 'Drama', getURL: requests.getDrama },
-  { title: 'Family', getURL: requests.getFamily },
-  { title: 'Fantasy', getURL: requests.getFantasy },
-  { title: 'History', getURL: requests.getHistory },
-  { title: 'Horror', getURL: requests.getHorror },
-  { title: 'Mystery', getURL: requests.getMystery },
-  { title: 'Romance', getURL: requests.getRomance },
-  { title: 'SciFi', getURL: requests.getSciFi },
-  { title: 'Thriller', getURL: requests.getThriller },
-  { title: 'War', getURL: requests.getWar },
-  { title: 'Western', getURL: requests.getWestern },
+  { title: 'Popular', url: requests.getPopular },
+  { title: 'Top Rated', url: requests.getTopRated },
+  { title: 'Action', url: requests.getAction },
+  { title: 'Adventure', url: requests.getAdventure },
+  { title: 'Animation', url: requests.getAnimation },
+  { title: 'Comedy', url: requests.getComedy },
+  { title: 'Crime', url: requests.getCrime },
+  { title: 'Documentary', url: requests.getDocumentary },
+  { title: 'Drama', url: requests.getDrama },
+  { title: 'Family', url: requests.getFamily },
+  { title: 'Fantasy', url: requests.getFantasy },
+  { title: 'History', url: requests.getHistory },
+  { title: 'Horror', url: requests.getHorror },
+  { title: 'Mystery', url: requests.getMystery },
+  { title: 'Romance', url: requests.getRomance },
+  { title: 'SciFi', url: requests.getSciFi },
+  { title: 'Thriller', url: requests.getThriller },
+  { title: 'War', url: requests.getWar },
+  { title: 'Western', url: requests.getWestern },
 ];
 
 export default function Home() {
@@ -31,7 +31,7 @@ export default function Home() {
       <Banner />
       <RowContainer>
         {rows.map((row) => (
-          <MovieRow key={row.title} title={row.title} getURL={row.getURL} />
+          <MovieRow key={row.title} title={row.title} url={row.url} />
         ))}
       </RowContainer>
     </>

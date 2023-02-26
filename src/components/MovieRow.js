@@ -1,28 +1,13 @@
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-// react slick slider from npm
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
-import axios from './API';
 import MovieSingleBackdrop from './MovieSingleBackdrop';
+import useTMDB from '../utils/useTMDB';
+import shuffleArray from '../utils/shuffleArray';
 
-export default function MovieRow(props) {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    async function getData() {
-      const request = await axios.get(props.getURL);
-      // shuffle array somewhat randomly
-      const sortData = request.data.results.sort(() => 0.5 - Math.random());
-      setMovies(sortData);
-      return request;
-    }
-
-    getData();
-  }, [props.getURL]);
+export default function MovieRow({ title, url }) {
+  const { data, isLoading, error } = useTMDB(url);
 
   // settings for react slick slider
   const settings = {
@@ -67,20 +52,17 @@ export default function MovieRow(props) {
     ],
   };
 
+  if (error) return <div>Error fetching data</div>;
+  if (isLoading) return <div>Loading...</div>;
+
+  const movies = shuffleArray(data.results);
+
   return (
     <RowContainer>
-      <h1>{props.title}</h1>
+      <h1>{title}</h1>
       <Row {...settings}>
         {movies.map(
-          (movie) =>
-            movie.backdrop_path && (
-              <MovieSingleBackdrop
-                key={movie.id}
-                id={movie.id}
-                poster={movie.backdrop_path}
-                title={movie.title || movie.name}
-              />
-            )
+          (movie) => movie.backdrop_path && <MovieSingleBackdrop key={movie.id} id={movie.id} poster={movie.backdrop_path} title={movie.title || movie.name} />
         )}
       </Row>
     </RowContainer>
