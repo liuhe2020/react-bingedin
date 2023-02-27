@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 
-export default function Header({ term, setTerm, setPage }) {
+export default function Header({ searchTerm, setSearchTerm, setPage }) {
   const [navBar, setNavBar] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
@@ -22,13 +22,13 @@ export default function Header({ term, setTerm, setPage }) {
 
   // redirect to home page if term is empty/no input in search box
   const handleSearch = (e) => {
-    setTerm(e.target.value);
+    setSearchTerm(e.target.value);
     if (pathname !== '/search') navigate('/search');
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    setTerm(inputRef.current.value);
+    setSearchTerm(inputRef.current.value);
     if (pathname !== '/search') navigate('/search');
   };
 
@@ -45,7 +45,7 @@ export default function Header({ term, setTerm, setPage }) {
             </WrapQueuePlayNextIcon>
           </Link>
           <StyledForm onSubmit={(e) => e.preventDefault()}>
-            <input ref={inputRef} onChange={handleSearch} type='text' placeholder='Search' value={term} />
+            <input ref={inputRef} onChange={handleSearch} type='text' placeholder='Search' value={searchTerm} />
             <WrapButton whileHover={{ scale: 1.1 }}>
               <SearchIcon onClick={handleClick} />
             </WrapButton>

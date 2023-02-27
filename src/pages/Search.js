@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { tmdbApi, API_KEY } from '../api/api';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import Loader from '../components/Loader';
+import { useInfiniteQuery } from 'react-query';
+import axios from 'axios';
 
 export default function Search({ debouncedTerm, page, setPage }) {
   const [movies, setMovies] = useState([]);
@@ -10,26 +12,53 @@ export default function Search({ debouncedTerm, page, setPage }) {
   const [movieTotal, setMovieTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  // const url = `/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=1`;
+
+  // const fetcher = ({ pageParam = 1 }) => tmdbApi(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=${pageParam}`);
+
+  const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage, isError, error } = useInfiniteQuery(
+    ['search', debouncedTerm],
+    ({ pageParam = 1 }) =>
+      axios
+        .get(`https://api.themoviedb.org/3/search/movie`, {
+          params: {
+            api_key: API_KEY,
+            query: debouncedTerm,
+            page: pageParam,
+          },
+        })
+        .then((res) => res.data),
+    {
+      getNextPageParam: (lastPage, pages) => {
+        const currentPage = lastPage.page;
+        return currentPage < lastPage.total_pages ? currentPage + 1 : undefined;
+      },
+    }
+  );
+
+  if (status === 'loading' || status === 'error') return;
+  console.log(data);
+
   // fetch data at search debouncedTerm change
-  useEffect(() => {
-    if (!debouncedTerm) {
-      setMovies([]);
-      setMovieTotal(0);
-      setPageTotal(1);
-      return;
-    } // prevent fetching at initial load since debouncedTerm is empty
+  // useEffect(() => {
+  //   if (!debouncedTerm) {
+  //     setMovies([]);
+  //     setMovieTotal(0);
+  //     setPageTotal(1);
+  //     return;
+  //   } // prevent fetching at initial load since debouncedTerm is empty
 
-    setLoading(true);
+  //   setLoading(true);
 
-    const getSearch = async () => {
-      const { data } = await tmdbApi.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=1`);
-      setMovies(data.results);
-      setMovieTotal(data.total_results);
-      setPageTotal(data.total_pages);
-      setLoading(false);
-    };
-    getSearch();
-  }, [debouncedTerm]);
+  //   const getSearch = async () => {
+  //     const { data } = await tmdbApi.get(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=1`);
+  //     setMovies(data.results);
+  //     setMovieTotal(data.total_results);
+  //     setPageTotal(data.total_pages);
+  //     setLoading(false);
+  //   };
+  //   getSearch();
+  // }, [debouncedTerm]);
 
   // fetch next page when user clicks load more button
   // useEffect(() => {
@@ -47,26 +76,28 @@ export default function Search({ debouncedTerm, page, setPage }) {
   // }, [debouncedTerm, page]);
 
   return (
-    <SearchContainer>
-      {!debouncedTerm ? (
-        <p>Start your search by typing into the search box.</p>
-      ) : movies.length === 0 ? (
-        <p>Your search for "{debouncedTerm}" did not have any matches. Please try a different keyword.</p>
-      ) : (
-        <>
-          <p>
-            Your search for "{debouncedTerm}" has {movieTotal} results.
-          </p>
-          <ResultContainer>
-            {movies.map((movie, index) => (
-              <MovieSinglePoster key={index} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />
-            ))}
-          </ResultContainer>
-          {loading && <Loader />}
-          {page < pageTotal && <LoadButton onClick={() => setPage((prev) => prev + 1)}>Load More</LoadButton>}
-        </>
-      )}
-    </SearchContainer>
+    // <SearchContainer>
+    //   {!debouncedTerm ? (
+    //     <p>Start your search by typing into the search box.</p>
+    //   ) : data.results.length ? (
+    //     <p>Your search for "{debouncedTerm}" did not have any matches. Please try a different keyword.</p>
+    //   ) : (
+    //     <>
+    //       <p>
+    //         Your search for "{debouncedTerm}" has {movieTotal} results.
+    //       </p>
+    //       <ResultContainer>
+    //         {data.results.map((movie, index) => (
+    //           <MovieSinglePoster key={index} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />
+    //         ))}
+    //       </ResultContainer>
+    //       {loading && <Loader />}
+    //     </>
+    //   )}
+    // </SearchContainer>
+    <>
+      <LoadButton onClick={() => fetchNextPage()}>Load More</LoadButton>
+    </>
   );
 }
 

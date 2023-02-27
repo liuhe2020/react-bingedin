@@ -3,11 +3,11 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import MovieSingleBackdrop from './MovieSingleBackdrop';
-import useTMDB from '../utils/useTMDB';
+import useMovies from '../utils/useMovies';
 import shuffleArray from '../utils/shuffleArray';
 
 export default function MovieRow({ title, url }) {
-  const { data, isLoading, error } = useTMDB(url);
+  const { status, data, error } = useMovies(url);
 
   // settings for react slick slider
   const settings = {
@@ -52,8 +52,7 @@ export default function MovieRow({ title, url }) {
     ],
   };
 
-  if (error) return <div>Error fetching data</div>;
-  if (isLoading) return <div>Loading...</div>;
+  if (status === 'loading' || status === 'error') return;
 
   const movies = shuffleArray(data.results);
 
