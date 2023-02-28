@@ -12,32 +12,20 @@ export default function Search({ debouncedTerm, page, setPage }) {
   const [movieTotal, setMovieTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  // const url = `/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=1`;
+  const fetcher = async (pageParam = 1) => {
+    const { data } = await tmdbApi(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=${pageParam}`);
+    return data;
+  };
 
-  // const fetcher = ({ pageParam = 1 }) => tmdbApi(`/search/movie?api_key=${API_KEY}&language=en-US&query=${debouncedTerm}&page=${pageParam}`);
-
-  const { data, status, fetchNextPage, hasNextPage, isFetchingNextPage, isError, error } = useInfiniteQuery(
-    ['search', debouncedTerm],
-    ({ pageParam = 1 }) =>
-      axios
-        .get(`https://api.themoviedb.org/3/search/movie`, {
-          params: {
-            api_key: API_KEY,
-            query: debouncedTerm,
-            page: pageParam,
-          },
-        })
-        .then((res) => res.data),
-    {
-      getNextPageParam: (lastPage, pages) => {
-        const currentPage = lastPage.page;
-        return currentPage < lastPage.total_pages ? currentPage + 1 : undefined;
-      },
-    }
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useInfiniteQuery(['s'], ({ pageParam }) => fetcher(pageParam), {
+    getNextPageParam: (lastPage) => {
+      const { page, total_pages } = lastPage;
+      return page < total_pages ? page + 1 : undefined;
+    },
+  });
 
   if (status === 'loading' || status === 'error') return;
-  console.log(data);
+  console.log(data.pages.flat());
 
   // fetch data at search debouncedTerm change
   // useEffect(() => {
@@ -76,28 +64,33 @@ export default function Search({ debouncedTerm, page, setPage }) {
   // }, [debouncedTerm, page]);
 
   return (
-    // <SearchContainer>
-    //   {!debouncedTerm ? (
-    //     <p>Start your search by typing into the search box.</p>
-    //   ) : data.results.length ? (
-    //     <p>Your search for "{debouncedTerm}" did not have any matches. Please try a different keyword.</p>
-    //   ) : (
-    //     <>
-    //       <p>
-    //         Your search for "{debouncedTerm}" has {movieTotal} results.
-    //       </p>
-    //       <ResultContainer>
-    //         {data.results.map((movie, index) => (
-    //           <MovieSinglePoster key={index} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />
-    //         ))}
-    //       </ResultContainer>
-    //       {loading && <Loader />}
-    //     </>
-    //   )}
-    // </SearchContainer>
-    <>
-      <LoadButton onClick={() => fetchNextPage()}>Load More</LoadButton>
-    </>
+    <SearchContainer>
+      {/* {!debouncedTerm ? (
+        <p>Start your search by typing into the search box.</p>
+      ) : data.results.length ? (
+        <p>Your search for "{debouncedTerm}" did not have any matches. Please try a different keyword.</p>
+      ) : (
+        <>
+          <p>
+            Your search for "{debouncedTerm}" has {movieTotal} results.
+          </p>
+          <ResultContainer>
+            {data.results.map((movie, index) => (
+              <MovieSinglePoster key={index} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />
+            ))}
+          </ResultContainer>
+          {loading && <Loader />}
+        </>
+      )} */}
+      <ResultContainer>
+        {data.pages.map((page) =>
+          page.results.map((movie) => <MovieSinglePoster key={movie.id} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} />)
+        )}
+      </ResultContainer>
+    </SearchContainer>
+    // <>
+    //   <LoadButton onClick={() => fetchNextPage()}>Load More</LoadButton>
+    // </>
   );
 }
 
@@ -160,6 +153,7 @@ const LoadButton = styled.button`
   color: #ddd;
   background-color: #333;
   cursor: pointer;
+  margin-top: 50%;
 
   &:hover {
     color: #111;
