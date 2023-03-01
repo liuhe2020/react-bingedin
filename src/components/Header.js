@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 
-export default function Header({ searchTerm, setSearchTerm, setPage }) {
+export default function Header({ searchTerm, setSearchTerm }) {
   const [navBar, setNavBar] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();

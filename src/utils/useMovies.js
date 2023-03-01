@@ -7,5 +7,5 @@ const fetcher = async (url) => {
 };
 
 export default function useMovies(url) {
-  return useQuery('movies', () => fetcher(url));
+  return useQuery('movies', () => fetcher(url), { staleTime: 1000 * 60 * 60 });
 }
