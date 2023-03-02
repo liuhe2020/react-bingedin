@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { tmdbApi, API_KEY } from '../api/api';
 import MovieSinglePoster from '../components/MovieSinglePoster';
@@ -24,7 +24,7 @@ export default function Search({ debouncedTerm }) {
 
   useEffect(() => {
     if (inView) fetchNextPage();
-  }, [inView]);
+  }, [inView, fetchNextPage]);
 
   return (
     <SearchContainer>

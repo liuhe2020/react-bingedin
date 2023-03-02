@@ -7,7 +7,7 @@ import useMovies from '../utils/useMovies';
 import shuffleArray from '../utils/shuffleArray';
 
 export default function MovieRow({ title, url }) {
-  const { status, data, error } = useMovies(url);
+  const { status, data } = useMovies(url);
 
   // settings for react slick slider
   const settings = {
