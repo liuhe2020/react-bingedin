@@ -14,23 +14,21 @@ import useDebounce from './utils/useDebounce';
 const queryClient = new QueryClient();
 
 export default function App() {
-  // states to be passed in to Header & Search components
   const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
 
   // custom hook to delay search term state update - minimising fetch calls
-  const debouncedTerm = useDebounce(searchTerm, 1000);
+  const debouncedTerm = useDebounce(searchTerm, 750);
 
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <GlobalProvider>
           <ScrollToTop />
-          <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} setPage={setPage} />
+          <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/watchlist' element={<WatchList />} />
-            <Route path='/search' element={<Search debouncedTerm={debouncedTerm} page={page} setPage={setPage} />} />
+            <Route path='/search' element={<Search debouncedTerm={debouncedTerm} />} />
           </Routes>
           <Footer />
           <GlobalStyle />

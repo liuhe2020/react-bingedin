@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import Modal from './Modal';
 import { GlobalContext } from '../context/GlobalState';
@@ -15,7 +15,7 @@ export default function MovieSinglePoster({ id, poster, title, isButton }) {
   const { removeWatchList } = useContext(GlobalContext);
 
   return (
-    <Wrapper hasPoster={poster}>
+    <Container hasPoster={poster}>
       <img src={poster ? `${movieBaseURL}${poster}` : `./images/img_unavail.jpg`} alt={title} />
       <div onClick={() => setModalOpen(true)}>
         <span>{title}</span>
@@ -25,12 +25,12 @@ export default function MovieSinglePoster({ id, poster, title, isButton }) {
           <RemoveCircleIcon />
         </motion.button>
       )}
-      <Modal open={modalOpen} id={id} onClose={() => setModalOpen(false)} />
-    </Wrapper>
+      <AnimatePresence>{modalOpen && <Modal key='modal-poster' open={modalOpen} id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
+    </Container>
   );
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
   cursor: pointer;
   position: relative;
   height: 100%;
@@ -38,7 +38,7 @@ const Wrapper = styled.div`
   // display movie title if doesn't have poster
   color: ${(props) => (props.hasPoster ? 'transparent' : '#999')};
 
-  div {
+  > div {
     position: absolute;
     display: flex;
     justify-content: center;

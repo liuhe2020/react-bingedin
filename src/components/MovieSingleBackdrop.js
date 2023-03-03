@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
@@ -9,45 +10,32 @@ export default function MovieSingleBackdrop({ id, poster, title }) {
   const movieBaseURL = 'https://image.tmdb.org/t/p/w300';
 
   return (
-    <Wrapper>
-      <img
-        src={poster ? `${movieBaseURL}${poster}` : `./images/img_unavail.jpg`}
-        alt={title}
-      />
-      <div onClick={() => setModalOpen(true)}></div>
-      <p onClick={() => setModalOpen(true)}>
-        <span>{title}</span>
-      </p>
-      <Modal open={modalOpen} id={id} onClose={() => setModalOpen(false)} />
-    </Wrapper>
+    <>
+      <Container onClick={() => setModalOpen(true)}>
+        <img src={poster ? `${movieBaseURL}${poster}` : `./images/img_unavail.jpg`} alt={title} />
+        <div>
+          <span>{title}</span>
+        </div>
+      </Container>
+      <AnimatePresence>{modalOpen && <Modal key='modal-backdrop' open={modalOpen} id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
+    </>
   );
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
   position: relative;
   cursor: pointer;
   transition: all 0.3s;
 
   img {
-    display: block;
-    width: 98%;
-    border-radius: 0.2vw;
+    width: 100%;
   }
 
   div {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 98%;
-    height: 100%;
-    z-index: 1;
-  }
-
-  p {
     color: #ddd;
     position: absolute;
-    bottom: 0.5vw;
-    right: 1vw;
+    bottom: 0.7vw;
+    right: 0.7vw;
     width: 12vw;
     text-align: right;
     font-size: 1vw;

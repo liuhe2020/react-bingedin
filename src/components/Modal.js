@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import ReactDom from 'react-dom';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import CancelIcon from '@mui/icons-material/Cancel';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
@@ -47,9 +47,6 @@ export default function Modal({ open, id, onClose }) {
     }
   };
 
-  // calculate width of scrollbar for backdrop element
-  const modalBackdropMargin = window.innerWidth - document.body.offsetWidth;
-
   // function to return mapped items, if item is last of array then exclude comma
   const renderItem = (arr) => arr.map((item) => (arr.indexOf(item) === arr.length - 1 ? `${item.name}` : `${item.name}, `));
 
@@ -94,103 +91,83 @@ export default function Modal({ open, id, onClose }) {
 
   // use createPortal to append modal to the body with id 'modal-root'
   return ReactDom.createPortal(
-    <AnimatePresence>
-      {open && (
-        <>
-          <ModalContainer>
-            <Overlay ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-            <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
-              <Player>
-                <iframe
-                  width='853'
-                  height='480'
-                  src={`https://www.youtube.com/embed/${video}`}
-                  frameBorder='0'
-                  allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                  allowFullScreen
-                  title='Embedded youtube'
-                />
-              </Player>
-              <Detail>
-                <h1>{movie.title}</h1>
-                <Info>
-                  <StarRoundedIcon style={{ color: '#FFCA63' }} />
-                  {/* round rating to 1 decimal */}
-                  <span>{Math.round(movie.vote_average * 10) / 10}</span>
-                  <p>{`${movie.runtime} min`}</p>
-                  <p>{movie.release_date}</p>
-                  {isWatchList ? (
-                    <StyledButton onClick={removeMovie}>
-                      <RemoveCircleIcon />
-                      Watch List
-                    </StyledButton>
-                  ) : (
-                    <StyledButton onClick={addMovie}>
-                      <AddCircleIcon />
-                      Watch List
-                    </StyledButton>
-                  )}
-                </Info>
-                <Overview>{movie.overview}</Overview>
-                <Credits>
-                  <p>
-                    Language:
-                    <span>{`${movie.original_language}`.toUpperCase()}</span>
-                  </p>
-                  <p>
-                    Genres:
-                    <span>{renderItem(genres)}</span>
-                  </p>
-                  <p>
-                    Director: <span>{renderDirector()}</span>
-                  </p>
-                  <p>
-                    Cast: <span>{renderItem(cast)}</span>
-                  </p>
-                  <p>
-                    Production: <span>{renderItem(company)}</span>
-                  </p>
-                </Credits>
-                <Toast>
-                  <AnimatePresence>
-                    {showAdded && (
-                      <motion.p key='added' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
-                        Added to Watch List
-                      </motion.p>
-                    )}
-                    {showRemoved && (
-                      <motion.p key='removed' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
-                        Removed from Watch List
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </Toast>
-              </Detail>
-              <WrapCancelIcon onClick={onClose} whileHover={{ scale: 1.2 }}>
-                <CancelIcon />
-              </WrapCancelIcon>
-            </Container>
-          </ModalContainer>
-          <ScrollLock margin={modalBackdropMargin} />
-        </>
-      )}
-    </AnimatePresence>,
-    document.getElementById('modal-root')
+    <ModalContainer>
+      <Overlay ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+      <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
+        <Player>
+          <iframe
+            width='853'
+            height='480'
+            src={`https://www.youtube.com/embed/${video}`}
+            frameBorder='0'
+            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+            allowFullScreen
+            title='Embedded youtube'
+          />
+        </Player>
+        <Detail>
+          <h1>{movie.title}</h1>
+          <Info>
+            <StarRoundedIcon style={{ color: '#FFCA63' }} />
+            {/* round rating to 1 decimal */}
+            <span>{Math.round(movie.vote_average * 10) / 10}</span>
+            <p>{`${movie.runtime} min`}</p>
+            <p>{movie.release_date}</p>
+            {isWatchList ? (
+              <StyledButton onClick={removeMovie}>
+                <RemoveCircleIcon />
+                Watch List
+              </StyledButton>
+            ) : (
+              <StyledButton onClick={addMovie}>
+                <AddCircleIcon />
+                Watch List
+              </StyledButton>
+            )}
+          </Info>
+          <Overview>{movie.overview}</Overview>
+          <Credits>
+            <p>
+              Language:
+              <span>{`${movie.original_language}`.toUpperCase()}</span>
+            </p>
+            <p>
+              Genres:
+              <span>{renderItem(genres)}</span>
+            </p>
+            <p>
+              Director: <span>{renderDirector()}</span>
+            </p>
+            <p>
+              Cast: <span>{renderItem(cast)}</span>
+            </p>
+            <p>
+              Production: <span>{renderItem(company)}</span>
+            </p>
+          </Credits>
+          <Toast>
+            <AnimatePresence>
+              {showAdded && (
+                <motion.p key='added' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
+                  Added to Watch List
+                </motion.p>
+              )}
+              {showRemoved && (
+                <motion.p key='removed' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
+                  Removed from Watch List
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </Toast>
+        </Detail>
+        <WrapCancelIcon onClick={onClose} whileHover={{ scale: 1.2 }}>
+          <CancelIcon />
+        </WrapCancelIcon>
+      </Container>
+    </ModalContainer>,
+    document.getElementById('modal')
   );
 }
-
-// create a global styled for the modal to lock scroll
-// offset margin right for the missing scrollbar so page doesn't expand/jump
-const ScrollLock = createGlobalStyle`
-  body{
-    overflow-y: hidden;
-    margin-right: ${(props) => props.margin + 'px'}
-  }
-
-  nav{
-    margin-right: ${(props) => props.margin + 'px'}
-  }
-`;
 
 const ModalContainer = styled.div`
   position: fixed;

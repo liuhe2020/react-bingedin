@@ -3,11 +3,15 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import MovieSingleBackdrop from './MovieSingleBackdrop';
-import useMovies from '../utils/useMovies';
 import shuffleArray from '../utils/shuffleArray';
+import { fetcher } from '../api/api';
+import { useQuery } from 'react-query';
 
 export default function MovieRow({ title, url }) {
-  const { status, data } = useMovies(url);
+  const { data, status } = useQuery(title, () => fetcher(url), {
+    staleTime: 1000 * 60 * 60,
+    select: (data) => shuffleArray(data.results),
+  });
 
   // settings for react slick slider
   const settings = {
@@ -52,18 +56,23 @@ export default function MovieRow({ title, url }) {
     ],
   };
 
-  if (status === 'loading' || status === 'error') return;
-
-  const movies = shuffleArray(data.results);
-
   return (
     <RowContainer>
       <h1>{title}</h1>
-      <Row {...settings}>
-        {movies.map(
-          (movie) => movie.backdrop_path && <MovieSingleBackdrop key={movie.id} id={movie.id} poster={movie.backdrop_path} title={movie.title || movie.name} />
-        )}
-      </Row>
+      {status === 'loading' || status === 'error' ? (
+        <Row {...settings}>
+          {[...Array(6).keys()].map((i) => (
+            <Skeleton key={i} />
+          ))}
+        </Row>
+      ) : (
+        <Row {...settings}>
+          {data.map(
+            (movie) =>
+              movie.backdrop_path && <MovieSingleBackdrop key={movie.id} id={movie.id} poster={movie.backdrop_path} title={movie.title || movie.name} />
+          )}
+        </Row>
+      )}
     </RowContainer>
   );
 }
@@ -119,5 +128,42 @@ const Row = styled(Slider)`
 
   .slick-slide {
     overflow-y: visible;
+
+    > div {
+      width: 98%;
+      border-radius: 0.2vw;
+    }
+  }
+`;
+
+const Skeleton = styled.div`
+  width: 98%;
+  height: 8.46vw;
+  background-color: #ededed0f;
+  background: linear-gradient(100deg, #ffffff00 40%, #ffffff12 50%, #ffffff00 60%) #ededed0f;
+  background-size: 200% 100%;
+  background-position-x: 180%;
+  animation: 1.6s Shine ease-in-out infinite;
+
+  @media (max-width: 1024px) {
+    height: 10.21vw;
+  }
+
+  @media (max-width: 768px) {
+    height: 12.72vw;
+  }
+
+  @media (max-width: 600px) {
+    height: 16.93vw;
+  }
+
+  @media (max-width: 450px) {
+    height: 25.4vw;
+  }
+
+  @keyframes Shine {
+    to {
+      background-position-x: -20%;
+    }
   }
 `;
