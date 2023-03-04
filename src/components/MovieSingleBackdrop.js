@@ -17,7 +17,7 @@ export default function MovieSingleBackdrop({ id, poster, title }) {
           <span>{title}</span>
         </div>
       </Container>
-      <AnimatePresence>{modalOpen && <Modal key='modal-backdrop' open={modalOpen} id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>{modalOpen && <Modal key='modal-backdrop' id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
     </>
   );
 }

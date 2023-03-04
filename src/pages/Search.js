@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { tmdbApi, API_KEY } from '../api/api';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import Loader from '../components/Loader';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 export default function Search({ debouncedTerm }) {
@@ -83,26 +83,26 @@ const HandleContainer = styled.div`
 const ResultContainer = styled.div`
   display: grid;
   grid-auto-rows: auto;
-  grid-gap: 5px;
+  grid-gap: 8px;
 
   // width calculated based on number of images and taking into account of grid gap
   @media (min-width: 251px) {
-    grid-template-columns: repeat(auto-fit, minmax(100px, calc((100% - 5px) / 2)));
+    grid-template-columns: repeat(auto-fit, minmax(100px, calc((100% - 8px) / 2)));
   }
 
   @media (min-width: 451px) {
-    grid-template-columns: repeat(auto-fit, minmax(100px, calc((100% - 10px) / 3)));
+    grid-template-columns: repeat(auto-fit, minmax(100px, calc((100% - 16px) / 3)));
   }
 
   @media (min-width: 601px) {
-    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 15px) / 4)));
+    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 24px) / 4)));
   }
 
   @media (min-width: 769px) {
-    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 20px) / 5)));
+    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 32px) / 5)));
   }
 
   @media (min-width: 1025px) {
-    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 30px) / 7)));
+    grid-template-columns: repeat(auto-fit, minmax(120px, calc((100% - 48px) / 7)));
   }
 `;

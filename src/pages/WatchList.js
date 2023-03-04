@@ -13,7 +13,7 @@ export default function WatchList() {
           <h1>Watch List</h1>
           <List>
             {watchlist.map((movie) => (
-              <MovieSinglePoster key={movie.id} id={movie.id} poster={movie.poster_path} title={movie.title || movie.name} isButton={true} />
+              <MovieSinglePoster key={movie.id} id={movie.id} poster={movie.poster_path} title={movie.title} isButton={true} />
             ))}
           </List>
         </>

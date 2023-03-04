@@ -8,8 +8,9 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { GlobalProvider } from './context/GlobalState';
-import { QueryClient, QueryClientProvider } from 'react-query';
 import useDebounce from './utils/useDebounce';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,15 @@ export default function App() {
             <Route path='/search' element={<Search debouncedTerm={debouncedTerm} />} />
           </Routes>
           <Footer />
+          <Toaster
+            position='bottom-center'
+            toastOptions={{
+              style: {
+                background: 'rgb(0 0 0 / .8)',
+                color: '#fff',
+              },
+            }}
+          />
           <GlobalStyle />
         </GlobalProvider>
       </QueryClientProvider>

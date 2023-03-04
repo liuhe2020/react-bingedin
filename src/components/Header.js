@@ -2,8 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import SearchIcon from '@mui/icons-material/Search';
-import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
+import { MagnifyingGlassIcon, TvIcon } from '@heroicons/react/24/solid';
 
 export default function Header({ searchTerm, setSearchTerm }) {
   const [navBar, setNavBar] = useState(false);
@@ -40,14 +39,12 @@ export default function Header({ searchTerm, setSearchTerm }) {
         </Link>
         <Menu>
           <Link to='/watchlist'>
-            <WrapQueuePlayNextIcon whileHover={{ scale: 1.1 }}>
-              <QueuePlayNextIcon />
-            </WrapQueuePlayNextIcon>
+            <StyledTvIcon />
           </Link>
           <StyledForm onSubmit={(e) => e.preventDefault()}>
             <input ref={inputRef} onChange={handleSearch} type='text' placeholder='Search' value={searchTerm} />
-            <WrapButton whileHover={{ scale: 1.1 }}>
-              <SearchIcon onClick={handleClick} />
+            <WrapButton>
+              <StyledMagnifyingGlassIcon onClick={handleClick} />
             </WrapButton>
           </StyledForm>
         </Menu>
@@ -114,7 +111,7 @@ const StyledForm = styled.form`
   input {
     width: 100%;
     padding: 0.4rem 2rem 0.4rem 0.6rem;
-    border: 2px solid #ddd;
+    border: 1.5px solid #ddd;
     background-color: #111;
     font-size: 1rem;
     color: #ddd;
@@ -138,12 +135,26 @@ const WrapButton = styled(motion.button)`
   cursor: pointer;
 `;
 
-const WrapQueuePlayNextIcon = styled(motion.div)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  margin-right: 20px;
+const StyledTvIcon = styled(TvIcon)`
+  width: 1.5rem;
+  color: #ddd;
+  margin-top: 0.25rem;
+  margin-right: 0.75rem;
+  transition: transform 0.1s;
 
-  cursor: pointer;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+const StyledMagnifyingGlassIcon = styled(MagnifyingGlassIcon)`
+  width: 1.2rem;
+  color: #ddd;
+  margin-top: 0.15rem;
+  margin-right: 0.25rem;
+  transition: transform 0.1s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;

@@ -1,43 +1,17 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useRef, useContext } from 'react';
 import ReactDom from 'react-dom';
 import styled from 'styled-components';
-import { AnimatePresence, motion } from 'framer-motion';
-import CancelIcon from '@mui/icons-material/Cancel';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { tmdbApi, API_KEY } from '../api/api';
+import { motion } from 'framer-motion';
+import { XCircleIcon, StarIcon, PlusCircleIcon, MinusCircleIcon } from '@heroicons/react/24/solid';
+import { fetcher, API_KEY } from '../api/api';
 import { GlobalContext } from '../context/GlobalState';
+import { useQueries } from '@tanstack/react-query';
 
-export default function Modal({ open, id, onClose }) {
-  const [movie, setMovie] = useState({});
-  const [video, setVideo] = useState({});
-  const [genres, setGenres] = useState([]);
-  const [company, setCompany] = useState([]);
-  const [cast, setCast] = useState([]);
-  const [crew, setCrew] = useState([]);
-
-  // states for toast notification when adding/removing watchlist item
-  const [showAdded, setShowAdded] = useState(false);
-  const [showRemoved, setShowRemoved] = useState(false);
-
-  // get values from GlobalContext object
+export default function Modal({ id, onClose }) {
   const { addWatchList, removeWatchList, watchlist } = useContext(GlobalContext);
 
   // check if movie exists already in watchlist
   const isWatchList = watchlist.find((movie) => movie.id === id) ? true : false;
-
-  const addMovie = () => {
-    addWatchList(movie);
-    setShowAdded(true);
-    setTimeout(() => setShowAdded(false), 2500);
-  };
-
-  const removeMovie = () => {
-    removeWatchList(id);
-    setShowRemoved(true);
-    setTimeout(() => setShowRemoved(false), 2500);
-  };
 
   const modalRef = useRef();
   // if backdrop clicked, run onClose function to close modal
@@ -47,123 +21,113 @@ export default function Modal({ open, id, onClose }) {
     }
   };
 
-  // function to return mapped items, if item is last of array then exclude comma
-  const renderItem = (arr) => arr.map((item) => (arr.indexOf(item) === arr.length - 1 ? `${item.name}` : `${item.name}, `));
+  const results = useQueries({
+    queries: [
+      {
+        queryKey: [id],
+        queryFn: () => fetcher(`/movie/${id}?api_key=${API_KEY}&language=en-US`),
+        staleTime: 1000 * 60 * 60,
+        select: (data) => {
+          return {
+            id: data.id,
+            title: data.title,
+            runtime: data.runtime,
+            release_date: data.release_date,
+            overview: data.overview,
+            original_language: data.original_language,
+            vote_average: data.vote_average ? Math.round(data.vote_average * 10) / 10 : 'Unrated',
+            genres: data.genres.map((i) => i.name),
+            production_companies: data.production_companies.map((i) => i.name),
+            poster_path: data.poster_path,
+          };
+        },
+      },
+      {
+        queryKey: [`${id}-video`],
+        queryFn: () => fetcher(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`),
+        staleTime: 1000 * 60 * 60,
+        select: (data) => data.results.filter((v) => v.site === 'YouTube')[0]?.key,
+      },
+      {
+        queryKey: [`${id}-credits`],
+        queryFn: () => fetcher(`/movie/${id}/credits?api_key=${API_KEY}&language=en-US`),
+        staleTime: 1000 * 60 * 60,
+        select: (data) => {
+          return {
+            cast: data.cast.slice(0, 10).map((c) => c.name),
+            directors: data.crew.filter((c) => c.job === 'Director').map((c) => c.name),
+          };
+        },
+      },
+    ],
+  });
 
-  // same as function above to exclude comma in rendered last item of array
-  // in addition first filter through array to find items with key value pair {job: "Director"}
-  const renderDirector = () => {
-    const directors = crew.filter((person) => person.job === 'Director');
-    const director = directors.map((dir) => (directors.indexOf(dir) === directors.length - 1 ? `${dir.name}` : `${dir.name}, `));
-    return director;
-  };
-
-  useEffect(() => {
-    // run async function only if modal opens to prevent making unnecessary API calls
-    if (open) {
-      async function getMovie() {
-        const { data } = await tmdbApi.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
-        setMovie(data);
-        setGenres(data.genres);
-        setCompany(data.production_companies);
-        return data;
-      }
-
-      async function getVideo() {
-        const { data } = await tmdbApi.get(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`);
-        setVideo(data.results[0]?.key);
-        return data;
-      }
-
-      async function getCredits() {
-        const { data } = await tmdbApi.get(`/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
-        // get first 10 members of cast
-        setCast(data.cast.slice(0, 10));
-        setCrew(data.crew);
-        return data;
-      }
-
-      getMovie();
-      getVideo();
-      getCredits();
-    }
-  }, [open, id]);
+  const isSuccess = results.every((q) => q.isSuccess === true);
 
   // use createPortal to append modal to the body with id 'modal-root'
   return ReactDom.createPortal(
     <ModalContainer>
       <Overlay ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-      <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
-        <Player>
-          <iframe
-            width='853'
-            height='480'
-            src={`https://www.youtube.com/embed/${video}`}
-            frameBorder='0'
-            allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-            allowFullScreen
-            title='Embedded youtube'
-          />
-        </Player>
-        <Detail>
-          <h1>{movie.title}</h1>
-          <Info>
-            <StarRoundedIcon style={{ color: '#FFCA63' }} />
-            {/* round rating to 1 decimal */}
-            <span>{Math.round(movie.vote_average * 10) / 10}</span>
-            <p>{`${movie.runtime} min`}</p>
-            <p>{movie.release_date}</p>
-            {isWatchList ? (
-              <StyledButton onClick={removeMovie}>
-                <RemoveCircleIcon />
-                Watch List
-              </StyledButton>
-            ) : (
-              <StyledButton onClick={addMovie}>
-                <AddCircleIcon />
-                Watch List
-              </StyledButton>
-            )}
-          </Info>
-          <Overview>{movie.overview}</Overview>
-          <Credits>
-            <p>
-              Language:
-              <span>{`${movie.original_language}`.toUpperCase()}</span>
-            </p>
-            <p>
-              Genres:
-              <span>{renderItem(genres)}</span>
-            </p>
-            <p>
-              Director: <span>{renderDirector()}</span>
-            </p>
-            <p>
-              Cast: <span>{renderItem(cast)}</span>
-            </p>
-            <p>
-              Production: <span>{renderItem(company)}</span>
-            </p>
-          </Credits>
-          <Toast>
-            <AnimatePresence>
-              {showAdded && (
-                <motion.p key='added' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
-                  Added to Watch List
-                </motion.p>
+      {isSuccess && (
+        <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
+          <Player>
+            <iframe
+              width='853'
+              height='480'
+              src={`https://www.youtube.com/embed/${results[1].data}`}
+              frameBorder='0'
+              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+              allowFullScreen
+              title='Embedded youtube'
+            />
+          </Player>
+          <Detail>
+            <TitleWrapper>
+              <h1>{results[0].data.title}</h1>
+              {isWatchList ? (
+                <StyledButton onClick={() => removeWatchList(id)}>
+                  <StyledMinusCircleIcon />
+                  Watch List
+                </StyledButton>
+              ) : (
+                <StyledButton onClick={() => addWatchList(results[0].data)}>
+                  <StyledPlusCircleIcon />
+                  Watch List
+                </StyledButton>
               )}
-              {showRemoved && (
-                <motion.p key='removed' initial={{ x: '150px' }} animate={{ x: 0 }} exit={{ x: '150px' }} transition={{ type: 'tween' }}>
-                  Removed from Watch List
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </Toast>
-        </Detail>
-        <WrapCancelIcon onClick={onClose} whileHover={{ scale: 1.2 }}>
-          <CancelIcon />
-        </WrapCancelIcon>
-      </Container>
+            </TitleWrapper>
+            <Info>
+              <StyledStarIcon />
+              <span>{results[0].data.vote_average}</span>
+              <p>{`${results[0].data.runtime} min`}</p>
+              <p>{results[0].data.release_date}</p>
+            </Info>
+            <Overview>{results[0].data.overview}</Overview>
+            <Credits>
+              <p>
+                Language:
+                <span>{`${results[0].data.original_language}`.toUpperCase()}</span>
+              </p>
+              <p>
+                Genres:
+                <span>{results[0].data.genres.join(', ')}</span>
+              </p>
+              <p>
+                Director: <span>{results[2].data.directors.join(', ')}</span>
+              </p>
+              <p>
+                Cast: <span>{results[2].data.cast.join(', ')}</span>
+              </p>
+              <p>
+                Production: <span>{results[0].data.production_companies.join(', ')}</span>
+              </p>
+            </Credits>
+          </Detail>
+          <WrapXCircleIcon onClick={onClose} whileHover={{ scale: 1.1 }}>
+            <StyledXCircleIcon />
+          </WrapXCircleIcon>
+        </Container>
+      )}
     </ModalContainer>,
     document.getElementById('modal')
   );
@@ -206,7 +170,7 @@ const Container = styled(motion.div)`
   }
 `;
 
-const WrapCancelIcon = styled(motion.div)`
+const WrapXCircleIcon = styled(motion.div)`
   position: absolute;
   top: -0.8rem;
   right: -0.8rem;
@@ -228,16 +192,21 @@ const Player = styled.div`
 
 const Detail = styled.div`
   position: relative;
-  padding: 1.5vw 3vw;
+  padding: 2vw 3vw;
   overflow: hidden;
 
   @media (max-width: 768px) {
     padding: 20px;
   }
+`;
 
-  h1 {
-    margin-bottom: 1.5vw;
-  }
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5vw;
+  margin-bottom: 1.5vw;
 `;
 
 const Info = styled.div`
@@ -259,7 +228,8 @@ const StyledButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 8rem;
+  gap: 0.3rem;
+  min-width: 8rem;
   outline: none;
   border: none;
   font-size: 14px;
@@ -280,26 +250,6 @@ const StyledButton = styled.button`
     background-color: #ddd;
     transition: all 0.2s;
   }
-
-  @media (max-width: 1024px) {
-    margin: 1rem 0;
-  }
-`;
-
-const Toast = styled.div`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-
-  p {
-    width: 115px;
-    font-size: 14px;
-    text-align: center;
-    background-color: #333;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-    padding: 0.5rem;
-    border-radius: 0.2rem;
-  }
 `;
 
 const Overview = styled.div`
@@ -319,4 +269,21 @@ const Credits = styled.div`
     color: #ddd;
     margin-left: 0.3rem;
   }
+`;
+
+const StyledXCircleIcon = styled(XCircleIcon)`
+  width: 1.5rem;
+`;
+
+const StyledStarIcon = styled(StarIcon)`
+  width: 1.5rem;
+  color: #ffca63;
+`;
+
+const StyledPlusCircleIcon = styled(PlusCircleIcon)`
+  width: 1.5rem;
+`;
+
+const StyledMinusCircleIcon = styled(MinusCircleIcon)`
+  width: 1.5rem;
 `;

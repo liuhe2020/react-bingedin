@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { MinusCircleIcon } from '@heroicons/react/24/solid';
 import Modal from './Modal';
 import { GlobalContext } from '../context/GlobalState';
 
@@ -21,11 +21,11 @@ export default function MovieSinglePoster({ id, poster, title, isButton }) {
         <span>{title}</span>
       </div>
       {isButton && (
-        <motion.button whileHover={{ scale: 1.2 }} onClick={() => removeWatchList(id)}>
-          <RemoveCircleIcon />
+        <motion.button whileHover={{ scale: 1.1 }} onClick={() => removeWatchList(id)}>
+          <StyledMinusCircleIcon />
         </motion.button>
       )}
-      <AnimatePresence>{modalOpen && <Modal key='modal-poster' open={modalOpen} id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>{modalOpen && <Modal key='modal-poster' id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
     </Container>
   );
 }
@@ -99,4 +99,8 @@ const Container = styled.div`
       opacity: 1;
     }
   }
+`;
+
+const StyledMinusCircleIcon = styled(MinusCircleIcon)`
+  width: 1.5rem;
 `;

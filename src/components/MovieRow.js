@@ -5,10 +5,10 @@ import 'slick-carousel/slick/slick-theme.css';
 import MovieSingleBackdrop from './MovieSingleBackdrop';
 import shuffleArray from '../utils/shuffleArray';
 import { fetcher } from '../api/api';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 
 export default function MovieRow({ title, url }) {
-  const { data, status } = useQuery(title, () => fetcher(url), {
+  const { data, status } = useQuery([title], () => fetcher(url), {
     staleTime: 1000 * 60 * 60,
     select: (data) => shuffleArray(data.results),
   });
