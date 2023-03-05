@@ -35,9 +35,12 @@ export default function App() {
           <Toaster
             position='bottom-center'
             toastOptions={{
+              duration: 3000,
               style: {
-                background: 'rgb(0 0 0 / .8)',
-                color: '#fff',
+                background: '#ddd',
+                color: '#333',
+                fontWeight: '500',
+                fontSize: '14px',
               },
             }}
           />

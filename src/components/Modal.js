@@ -6,6 +6,7 @@ import { XCircleIcon, StarIcon, PlusCircleIcon, MinusCircleIcon } from '@heroico
 import { fetcher, API_KEY } from '../api/api';
 import { GlobalContext } from '../context/GlobalState';
 import { useQueries } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 export default function Modal({ id, onClose }) {
   const { addWatchList, removeWatchList, watchlist } = useContext(GlobalContext);
@@ -85,12 +86,22 @@ export default function Modal({ id, onClose }) {
             <TitleWrapper>
               <h1>{results[0].data.title}</h1>
               {isWatchList ? (
-                <StyledButton onClick={() => removeWatchList(id)}>
+                <StyledButton
+                  onClick={() => {
+                    removeWatchList(id);
+                    toast('Removed from watch list');
+                  }}
+                >
                   <StyledMinusCircleIcon />
                   Watch List
                 </StyledButton>
               ) : (
-                <StyledButton onClick={() => addWatchList(results[0].data)}>
+                <StyledButton
+                  onClick={() => {
+                    addWatchList(results[0].data);
+                    toast('Added to watch list');
+                  }}
+                >
                   <StyledPlusCircleIcon />
                   Watch List
                 </StyledButton>
@@ -105,18 +116,18 @@ export default function Modal({ id, onClose }) {
             <Overview>{results[0].data.overview}</Overview>
             <Credits>
               <p>
-                Language:
-                <span>{`${results[0].data.original_language}`.toUpperCase()}</span>
-              </p>
-              <p>
                 Genres:
                 <span>{results[0].data.genres.join(', ')}</span>
               </p>
               <p>
-                Director: <span>{results[2].data.directors.join(', ')}</span>
+                Language:
+                <span>{`${results[0].data.original_language}`.toUpperCase()}</span>
               </p>
               <p>
                 Cast: <span>{results[2].data.cast.join(', ')}</span>
+              </p>
+              <p>
+                Director: <span>{results[2].data.directors.join(', ')}</span>
               </p>
               <p>
                 Production: <span>{results[0].data.production_companies.join(', ')}</span>
@@ -213,7 +224,7 @@ const Info = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 1.5vw;
+  margin-bottom: 0.75vw;
 
   span {
     margin: 0 1rem 0 0.2rem;
