@@ -37,7 +37,7 @@ export default function SlideSingle({ movie }) {
     if (!inView && playerEvent) {
       playerEvent.pauseVideo();
     }
-  }, [inView]);
+  }, [inView, playerEvent]);
 
   return (
     <Slide key={movie.id}>

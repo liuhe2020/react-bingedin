@@ -9,7 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 
 export default function MovieRow({ title, url }) {
   const { data, isSuccess } = useQuery([title], () => fetcher(url), {
-    // staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 60 * 60,
     select: (data) => shuffleArray(data.results),
   });
 

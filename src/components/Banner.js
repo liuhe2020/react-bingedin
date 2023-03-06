@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { useState } from 'react';
 import { fetcher, requests } from '../api/api';
 import SlideSingle from './SlideSingle';
 import { useQuery } from '@tanstack/react-query';
