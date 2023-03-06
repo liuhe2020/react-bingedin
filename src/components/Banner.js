@@ -1,26 +1,18 @@
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { tmdbApi } from '../api/api';
-import { requests } from '../api/api';
+import { useState } from 'react';
+import { fetcher, requests } from '../api/api';
 import SlideSingle from './SlideSingle';
+import { useQuery } from '@tanstack/react-query';
+import shuffleArray from '../utils/shuffleArray';
 
 export default function Banner() {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    async function getData() {
-      const request = await tmdbApi.get(requests.getTrending);
-      // get the ten random movies using a somewhat random algorithm in requested array
-      const sortMovies = request.data.results.sort(() => 0.5 - Math.random());
-      const randomTenMovies = sortMovies.slice(0, 10);
-      setMovies(randomTenMovies);
-      return request;
-    }
-    getData();
-  }, []);
+  const { data, isSuccess } = useQuery(['trending'], () => fetcher(requests.getTrending), {
+    staleTime: 1000 * 60 * 60,
+    select: (data) => shuffleArray(data.results.slice(0, 10)),
+  });
 
   // settings for react slick slider
   const settings = {
@@ -34,11 +26,15 @@ export default function Banner() {
   };
 
   return (
-    <BannerSlider {...settings}>
-      {movies.map((movie) => (
-        <SlideSingle key={movie.id} movie={movie} />
-      ))}
-    </BannerSlider>
+    <>
+      {isSuccess && (
+        <BannerSlider {...settings}>
+          {data.map((movie) => (
+            <SlideSingle key={movie.id} movie={movie} />
+          ))}
+        </BannerSlider>
+      )}
+    </>
   );
 }
 

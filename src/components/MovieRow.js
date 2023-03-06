@@ -8,8 +8,8 @@ import { fetcher } from '../api/api';
 import { useQuery } from '@tanstack/react-query';
 
 export default function MovieRow({ title, url }) {
-  const { data, status } = useQuery([title], () => fetcher(url), {
-    staleTime: 1000 * 60 * 60,
+  const { data, isSuccess } = useQuery([title], () => fetcher(url), {
+    // staleTime: 1000 * 60 * 60,
     select: (data) => shuffleArray(data.results),
   });
 
@@ -19,6 +19,7 @@ export default function MovieRow({ title, url }) {
     infinite: false,
     draggable: false,
     speed: 500,
+    lazyLoad: true,
     slidesToShow: 6,
     slidesToScroll: 6,
     responsive: [
@@ -34,7 +35,6 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
-          infinite: true,
         },
       },
       {
@@ -42,7 +42,6 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
         },
       },
       {
@@ -50,7 +49,6 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          infinite: true,
         },
       },
     ],
@@ -59,7 +57,7 @@ export default function MovieRow({ title, url }) {
   return (
     <RowContainer>
       <h1>{title}</h1>
-      {status === 'loading' || status === 'error' ? (
+      {!isSuccess ? (
         <Row {...settings}>
           {[...Array(6).keys()].map((i) => (
             <Skeleton key={i} />
@@ -74,6 +72,23 @@ export default function MovieRow({ title, url }) {
         </Row>
       )}
     </RowContainer>
+    // <RowContainer>
+    //   <h1>{title}</h1>
+    //   {status === 'loading' || status === 'error' ? (
+    //     <Row {...settings}>
+    //       {[...Array(6).keys()].map((i) => (
+    //         <Skeleton key={i} />
+    //       ))}
+    //     </Row>
+    //   ) : (
+    //     <Row {...settings}>
+    //       {data.map(
+    //         (movie) =>
+    //           movie.backdrop_path && <MovieSingleBackdrop key={movie.id} id={movie.id} poster={movie.backdrop_path} title={movie.title || movie.name} />
+    //       )}
+    //     </Row>
+    //   )}
+    // </RowContainer>
   );
 }
 

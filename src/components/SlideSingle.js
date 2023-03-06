@@ -1,44 +1,73 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Trailer from './Trailer';
+import YouTube from 'react-youtube';
+import { fetcher, API_KEY } from '../api/api';
+import { useQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
 
 export default function SlideSingle({ movie }) {
-  // isTrailer tracks when play trailer button is clicked
-  // if yes, render trailer iframe, else render image
+  // isTrailer tracks when play trailer button is clicked, if yes, render trailer iframe, else render image
   const [isTrailer, setIsTrailer] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playerEvent, setPlayerEvent] = useState(null);
+
+  const { ref, inView } = useInView();
 
   const movieURL = 'https://image.tmdb.org/t/p/w1280';
 
+  const { data, isSuccess } = useQuery([movie.id], () => fetcher(`/movie/${movie.id}/videos?api_key=${API_KEY}&language=en-US`), {
+    staleTime: 1000 * 60 * 60,
+    select: (data) => data.results[0]?.key,
+  });
+
   // truncate movie description into excerpt, n = number of characters
-  const truncate = (string, n) =>
-    string?.length > n ? string.substr(0, n - 1) + '...' : string;
+  const truncate = (string, n) => (string?.length > n ? string.substr(0, n - 1) + '...' : string);
+
+  const opts = {
+    playerVars: { autoplay: 1, controls: 0, fs: 0, modestbranding: 1 },
+  };
+
+  // set state based on playback https://developers.google.com/youtube/iframe_api_reference#Events
+  const handleOnStateChange = (e) => {
+    e.data === 1 ? setIsPlaying(true) : setIsPlaying(false);
+  };
+
+  // effect to pause video when user scroll out of view or change slide, targets an empty div on the DOM as targeting any other container div doesn't work with useInView, bug?
+  useEffect(() => {
+    if (!inView && playerEvent) {
+      playerEvent.pauseVideo();
+    }
+  }, [inView]);
 
   return (
     <Slide key={movie.id}>
       {isTrailer ? (
-        <Trailer
-          id={movie.id}
-          setIsTrailer={setIsTrailer}
-          setIsPlaying={setIsPlaying}
-        />
+        <PlayerContainer>
+          <Player>
+            {isSuccess && (
+              <YouTube
+                videoId={data}
+                opts={opts}
+                onReady={(e) => {
+                  setPlayerEvent(e.target);
+                }}
+                onStateChange={handleOnStateChange}
+                onEnd={() => setIsTrailer(false)}
+              />
+            )}
+          </Player>
+        </PlayerContainer>
       ) : (
-        <img
-          loading='lazy'
-          src={`${movieURL}${movie.backdrop_path}`}
-          alt={movie?.title || movie?.name || movie?.original_title}
-        />
+        <img loading='lazy' src={`${movieURL}${movie.backdrop_path}`} alt={movie?.title || movie?.name || movie?.original_title} />
       )}
       <Info>
-        {!isPlaying && (
-          <h1>{movie?.title || movie?.name || movie?.original_title}</h1>
-        )}
-        {!isTrailer && (
-          <button onClick={() => setIsTrailer(true)}>Play Trailer</button>
-        )}
+        {!isPlaying && <h1>{movie?.title || movie?.name || movie?.original_title}</h1>}
+        {!isTrailer && <button onClick={() => setIsTrailer(true)}>Play Trailer</button>}
         {!isPlaying && <p>{truncate(movie.overview, 200)}</p>}
       </Info>
-      <Overlay />
+      <Overlay>
+        <Ref ref={ref} />
+      </Overlay>
     </Slide>
   );
 }
@@ -52,6 +81,24 @@ const Slide = styled.div`
     display: block;
     object-fit: cover;
     object-position: 50% 30%;
+  }
+`;
+
+const PlayerContainer = styled.div`
+  height: 35.9vw;
+  overflow: hidden;
+`;
+
+const Player = styled.div`
+  padding-bottom: 56.25%;
+  position: relative;
+
+  iframe {
+    left: 0;
+    top: -15%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
   }
 `;
 
@@ -120,4 +167,9 @@ const Overlay = styled.div`
   height: 7vw;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(17, 17, 17, 1));
   z-index: 1;
+`;
+
+const Ref = styled.div`
+  width: 1px;
+  height: 100%;
 `;
