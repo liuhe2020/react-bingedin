@@ -17,7 +17,6 @@ export default function SlideSingle({ movie }) {
 
   const { data, isSuccess } = useQuery([movie.id], () => fetcher(`/movie/${movie.id}/videos?api_key=${API_KEY}&language=en-US`), {
     staleTime: 1000 * 60 * 60,
-    select: (data) => data.results[0]?.key,
   });
 
   // truncate movie description into excerpt, n = number of characters
@@ -46,7 +45,7 @@ export default function SlideSingle({ movie }) {
           <Player>
             {isSuccess && (
               <YouTube
-                videoId={data}
+                videoId={data.results[0]?.key}
                 opts={opts}
                 onReady={(e) => {
                   setPlayerEvent(e.target);

@@ -25,7 +25,7 @@ export default function Modal({ id, onClose }) {
   const results = useQueries({
     queries: [
       {
-        queryKey: [id],
+        queryKey: [`${id}-details`, id],
         queryFn: () => fetcher(`/movie/${id}?api_key=${API_KEY}&language=en-US`),
         staleTime: 1000 * 60 * 60,
         select: (data) => {
@@ -35,28 +35,34 @@ export default function Modal({ id, onClose }) {
             runtime: data.runtime,
             release_date: data.release_date,
             overview: data.overview,
-            original_language: data.original_language,
+            original_language: data.original_language.toUpperCase(),
             vote_average: data.vote_average ? Math.round(data.vote_average * 10) / 10 : 'Unrated',
-            genres: data.genres.map((i) => i.name),
-            production_companies: data.production_companies.map((i) => i.name),
+            genres: data.genres.map((i) => i.name).join(', '),
+            production_companies: data.production_companies.map((i) => i.name).join(', '),
             poster_path: data.poster_path,
           };
         },
       },
       {
-        queryKey: [`${id}-video`],
+        queryKey: [`${id}-video`, id],
         queryFn: () => fetcher(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`),
         staleTime: 1000 * 60 * 60,
         select: (data) => data.results.filter((v) => v.site === 'YouTube')[0]?.key,
       },
       {
-        queryKey: [`${id}-credits`],
+        queryKey: [`${id}-credits`, id],
         queryFn: () => fetcher(`/movie/${id}/credits?api_key=${API_KEY}&language=en-US`),
         staleTime: 1000 * 60 * 60,
         select: (data) => {
           return {
-            cast: data.cast.slice(0, 10).map((c) => c.name),
-            directors: data.crew.filter((c) => c.job === 'Director').map((c) => c.name),
+            cast: data.cast
+              .slice(0, 10)
+              .map((c) => c.name)
+              .join(', '),
+            directors: data.crew
+              .filter((c) => c.job === 'Director')
+              .map((c) => c.name)
+              .join(', '),
           };
         },
       },
@@ -110,27 +116,27 @@ export default function Modal({ id, onClose }) {
             <Info>
               <StyledStarIcon />
               <span>{results[0].data.vote_average}</span>
-              <p>{`${results[0].data.runtime} min`}</p>
+              <p>{`${results[0].data.runtime} mins`}</p>
               <p>{results[0].data.release_date}</p>
             </Info>
             <Overview>{results[0].data.overview}</Overview>
             <Credits>
               <p>
                 Genres:
-                <span>{results[0].data.genres.join(', ')}</span>
+                <span>{results[0].data.genres}</span>
               </p>
               <p>
                 Language:
-                <span>{`${results[0].data.original_language}`.toUpperCase()}</span>
+                <span>{results[0].data.original_language}</span>
               </p>
               <p>
-                Cast: <span>{results[2].data.cast.join(', ')}</span>
+                Cast: <span>{results[2].data.cast}</span>
               </p>
               <p>
-                Director: <span>{results[2].data.directors.join(', ')}</span>
+                Director: <span>{results[2].data.directors}</span>
               </p>
               <p>
-                Production: <span>{results[0].data.production_companies.join(', ')}</span>
+                Production: <span>{results[0].data.production_companies}</span>
               </p>
             </Credits>
           </Detail>
