@@ -19,7 +19,6 @@ export default function MovieRow({ title, url }) {
     infinite: false,
     draggable: false,
     speed: 500,
-    lazyLoad: true,
     slidesToShow: 6,
     slidesToScroll: 6,
     responsive: [
@@ -35,6 +34,7 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
+          infinite: true,
         },
       },
       {
@@ -42,6 +42,7 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
+          infinite: true,
         },
       },
       {
@@ -49,6 +50,7 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
+          infinite: true,
         },
       },
     ],
