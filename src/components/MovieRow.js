@@ -74,23 +74,6 @@ export default function MovieRow({ title, url }) {
         </Row>
       )}
     </RowContainer>
-    // <RowContainer>
-    //   <h1>{title}</h1>
-    //   {status === 'loading' || status === 'error' ? (
-    //     <Row {...settings}>
-    //       {[...Array(6).keys()].map((i) => (
-    //         <Skeleton key={i} />
-    //       ))}
-    //     </Row>
-    //   ) : (
-    //     <Row {...settings}>
-    //       {data.map(
-    //         (movie) =>
-    //           movie.backdrop_path && <MovieSingleBackdrop key={movie.id} id={movie.id} poster={movie.backdrop_path} title={movie.title || movie.name} />
-    //       )}
-    //     </Row>
-    //   )}
-    // </RowContainer>
   );
 }
 
@@ -136,6 +119,10 @@ const RowContainer = styled.div`
   .slick-next {
     right: -4.1vw;
   }
+
+  .slick-disabled {
+    display: none;
+  }
 `;
 
 const Row = styled(Slider)`
@@ -153,34 +140,12 @@ const Row = styled(Slider)`
   }
 `;
 
-const Skeleton = styled.div`
-  width: 98%;
-  height: 8.46vw;
+export const Skeleton = styled.div`
+  width: 100%;
+  aspect-ratio: 16/9;
   background-color: #ededed0f;
   background: linear-gradient(100deg, #ffffff00 40%, #ffffff12 50%, #ffffff00 60%) #ededed0f;
   background-size: 200% 100%;
   background-position-x: 180%;
   animation: 1.6s Shine ease-in-out infinite;
-
-  @media (max-width: 1024px) {
-    height: 10.21vw;
-  }
-
-  @media (max-width: 768px) {
-    height: 12.72vw;
-  }
-
-  @media (max-width: 600px) {
-    height: 16.93vw;
-  }
-
-  @media (max-width: 450px) {
-    height: 25.4vw;
-  }
-
-  @keyframes Shine {
-    to {
-      background-position-x: -20%;
-    }
-  }
 `;
