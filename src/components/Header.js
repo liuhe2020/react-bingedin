@@ -78,7 +78,7 @@ const Nav = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2vw;
+  padding: 0 4vw;
   background-image: linear-gradient(rgba(17, 17, 17, 0.6), rgba(0, 0, 0, 0));
 
   @media (max-width: 400px) {
@@ -88,6 +88,7 @@ const Nav = styled.nav`
 
 const Logo = styled.img`
   width: 100px;
+  margin-top: 0.3rem;
 `;
 
 const Menu = styled.div`

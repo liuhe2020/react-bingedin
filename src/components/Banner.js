@@ -34,7 +34,13 @@ export default function Banner() {
         </BannerSlider>
       ) : (
         <BannerSlider {...settings}>
-          <Skeleton />
+          <Skeleton>
+            <div>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </Skeleton>
         </BannerSlider>
       )}
     </>
@@ -115,7 +121,7 @@ export const Skeleton = styled.div`
 
     span:nth-child(3) {
       width: 33vw;
-      height: 5vw;
+      height: 2.5vw;
       background: rgba(100, 100, 100, 0.3);
     }
   }
