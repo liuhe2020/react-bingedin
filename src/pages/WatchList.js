@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import styled from 'styled-components';
 import MovieSinglePoster from '../components/MovieSinglePoster';
 import { GlobalContext } from '../context/GlobalState';
+import { PlusCircleIcon } from '@heroicons/react/24/solid';
 
 export default function WatchList() {
   const { watchlist } = useContext(GlobalContext);
@@ -18,7 +19,14 @@ export default function WatchList() {
           </List>
         </>
       ) : (
-        <p>The watch list is empty. Please click on a movie and select "+" on the pop-up page to add it to the list.</p>
+        <Desc>
+          <span>Your watch list is empty. You can add movies to the list by selecting a movie and hit the</span>
+          <StyledButton>
+            <StyledPlusCircleIcon />
+            Watch List
+          </StyledButton>
+          <span>button.</span>
+        </Desc>
       )}
     </ListContainer>
   );
@@ -74,4 +82,36 @@ const List = styled.div`
     color: #ddd;
     grid-column: 1 / span 7;
   }
+`;
+
+const Desc = styled.div`
+  span {
+    line-height: 1.8;
+  }
+
+  span:first-child {
+    margin-right: 0.3rem;
+  }
+`;
+
+const StyledButton = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 6.2rem;
+  outline: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 0.2rem;
+  padding: 0.3rem 0.3rem 0.3rem 0.1rem;
+  color: #ddd;
+  background-color: #333;
+  vertical-align: text-top;
+  margin-right: 0.3rem;
+`;
+
+const StyledPlusCircleIcon = styled(PlusCircleIcon)`
+  width: 1rem;
 `;

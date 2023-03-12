@@ -257,11 +257,6 @@ const StyledButton = styled.button`
   background-color: #333;
   cursor: pointer;
 
-  .MuiSvgIcon-root {
-    font-size: 1.2rem;
-    margin-right: 0.5rem;
-  }
-
   &:hover {
     color: #111;
     background-color: #ddd;
