@@ -148,4 +148,10 @@ export const Skeleton = styled.div`
   background-size: 200% 100%;
   background-position-x: 180%;
   animation: 1.6s Shine ease-in-out infinite;
+
+  @keyframes Shine {
+    to {
+      background-position-x: -20%;
+    }
+  }
 `;

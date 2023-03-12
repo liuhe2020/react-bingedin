@@ -7,9 +7,8 @@ import { useInView } from 'react-intersection-observer';
 
 export default function SlideSingle({ movie }) {
   // isTrailer tracks when play trailer button is clicked, if yes, render trailer iframe, else render image
-  const [isTrailer, setIsTrailer] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [playerEvent, setPlayerEvent] = useState(null);
+  const [playerStatus, setPlayerStatus] = useState('initial');
+  const [playerEvent, setPlayerEvent] = useState(null); // get Youtube player from their API so we can control the events on the player
 
   const { ref, inView } = useInView();
 
@@ -28,7 +27,13 @@ export default function SlideSingle({ movie }) {
 
   // set state based on playback https://developers.google.com/youtube/iframe_api_reference#Events
   const handleOnStateChange = (e) => {
-    e.data === 1 ? setIsPlaying(true) : setIsPlaying(false);
+    e.data === 0 && setPlayerStatus('initial');
+    e.data === 1 && setPlayerStatus('playing');
+    e.data === 2 && setPlayerStatus('paused');
+  };
+
+  const handleOnClick = () => {
+    playerStatus !== 'paused' ? setPlayerStatus('playing') : playerEvent.playVideo();
   };
 
   // effect to pause video when user scroll out of view or change slide, targets an empty div on the DOM as targeting any other container div doesn't work with useInView, bug?
@@ -40,7 +45,9 @@ export default function SlideSingle({ movie }) {
 
   return (
     <Slide key={movie.id}>
-      {isTrailer ? (
+      {playerStatus === 'initial' ? (
+        <img src={`${movieURL}${movie.backdrop_path}`} alt={movie?.title || movie?.name || movie?.original_title} />
+      ) : (
         <PlayerContainer>
           <Player>
             {isSuccess && (
@@ -51,19 +58,22 @@ export default function SlideSingle({ movie }) {
                   setPlayerEvent(e.target);
                 }}
                 onStateChange={handleOnStateChange}
-                onEnd={() => setIsTrailer(false)}
+                onEnd={() => {
+                  setPlayerStatus('initial');
+                  setPlayerEvent(null);
+                }}
               />
             )}
           </Player>
         </PlayerContainer>
-      ) : (
-        <img loading='lazy' src={`${movieURL}${movie.backdrop_path}`} alt={movie?.title || movie?.name || movie?.original_title} />
       )}
-      <Info>
-        {!isPlaying && <h1>{movie?.title || movie?.name || movie?.original_title}</h1>}
-        {!isTrailer && <button onClick={() => setIsTrailer(true)}>Play Trailer</button>}
-        {!isPlaying && <p>{truncate(movie.overview, 200)}</p>}
-      </Info>
+      {playerStatus !== 'playing' && (
+        <Info>
+          <h1>{movie?.title || movie?.name || movie?.original_title}</h1>
+          <button onClick={handleOnClick}>{playerStatus !== 'paused' ? 'Play Trailer' : 'Resume'}</button>
+          <p>{truncate(movie.overview, 200)}</p>
+        </Info>
+      )}
       <Overlay>
         <Ref ref={ref} />
       </Overlay>
@@ -73,6 +83,7 @@ export default function SlideSingle({ movie }) {
 
 const Slide = styled.div`
   position: relative;
+  cursor: grab;
 
   img {
     width: 100%;

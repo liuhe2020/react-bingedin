@@ -26,11 +26,15 @@ export default function Banner() {
 
   return (
     <>
-      {isSuccess && (
+      {isSuccess ? (
         <BannerSlider {...settings}>
           {data.map((movie) => (
             <SlideSingle key={movie.id} movie={movie} />
           ))}
+        </BannerSlider>
+      ) : (
+        <BannerSlider {...settings}>
+          <Skeleton />
         </BannerSlider>
       )}
     </>
@@ -64,5 +68,59 @@ const BannerSlider = styled(Slider)`
         }
       }
     }
+  }
+`;
+
+export const Skeleton = styled.div`
+  position: relative;
+  width: 100%;
+  height: 35.9vw;
+  background-color: #ededed0f;
+  background: linear-gradient(100deg, #ffffff00 40%, #ffffff12 50%, #ffffff00 60%) #ededed0f;
+  background-size: 200% 100%;
+  background-position-x: 180%;
+  animation: 1.6s Shine ease-in-out infinite;
+
+  @keyframes Shine {
+    to {
+      background-position-x: -20%;
+    }
+  }
+
+  div {
+    position: absolute;
+    max-width: 35vw;
+    left: 4vw;
+    top: 11vw;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+
+    span {
+      border-radius: 0.2rem;
+    }
+
+    span:nth-child(1) {
+      width: 20vw;
+      height: 2.5vw;
+      background: rgba(100, 100, 100, 0.3);
+    }
+
+    span:nth-child(2) {
+      width: 12vw;
+      height: 2.5vw;
+      background: rgba(100, 100, 100, 0.3);
+    }
+
+    span:nth-child(3) {
+      width: 33vw;
+      height: 5vw;
+      background: rgba(100, 100, 100, 0.3);
+    }
+  }
+
+  @media (max-width: 600px) {
+    top: 7vw;
   }
 `;
