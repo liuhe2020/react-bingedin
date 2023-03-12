@@ -13,8 +13,19 @@ export default function MovieRow({ title, url }) {
     select: (data) => shuffleArray(data.results),
   });
 
+  const PrevBtn = (props) => {
+    const { className, onClick, currentSlide } = props;
+    return <button className={className} onClick={onClick} />;
+  };
+  const NextBtn = (props) => {
+    const { className, onClick, slideCount, currentSlide } = props;
+    return <button className={className} onClick={onClick} />;
+  };
+
   // settings for react slick slider
   const settings = {
+    prevArrow: <PrevBtn />,
+    nextArrow: <NextBtn />,
     dots: false,
     infinite: false,
     draggable: false,
@@ -34,7 +45,6 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
-          infinite: true,
         },
       },
       {
@@ -42,7 +52,6 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
         },
       },
       {
@@ -50,7 +59,6 @@ export default function MovieRow({ title, url }) {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
-          infinite: true,
         },
       },
     ],
@@ -98,24 +106,19 @@ const RowContainer = styled.div`
     height: 102%;
     z-index: 1;
     transition: all 0.15s;
-
     &:before {
       visibility: hidden;
     }
-
     &:hover {
       background-color: rgba(0, 0, 0, 0.5);
     }
   }
-
   &:hover .slick-arrow:before {
     visibility: visible;
   }
-
   .slick-prev {
     left: -4.1vw;
   }
-
   .slick-next {
     right: -4.1vw;
   }
