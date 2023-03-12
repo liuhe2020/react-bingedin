@@ -47,7 +47,7 @@ export default function Modal({ id, onClose }) {
         queryKey: [`${id}-video`, id],
         queryFn: () => fetcher(`/movie/${id}/videos?api_key=${API_KEY}&language=en-US`),
         staleTime: 1000 * 60 * 60,
-        select: (data) => data.results.filter((v) => v.site === 'YouTube')[0]?.key,
+        select: (data) => data.results.filter((v) => v.site === 'YouTube' && v.type === 'Trailer')[0]?.key,
       },
       {
         queryKey: [`${id}-credits`, id],

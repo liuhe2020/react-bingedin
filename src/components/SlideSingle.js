@@ -52,7 +52,7 @@ export default function SlideSingle({ movie }) {
           <Player>
             {isSuccess && (
               <YouTube
-                videoId={data.results[0]?.key}
+                videoId={data.results.filter((v) => v.site === 'YouTube' && v.type === 'Trailer')[0]?.key}
                 opts={opts}
                 onReady={(e) => {
                   setPlayerEvent(e.target);
