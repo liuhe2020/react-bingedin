@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { fetcher, requests } from '../api/api';
+import { fetcher, API_KEY } from '../api/api';
 import SlideSingle from './SlideSingle';
 import { useQuery } from '@tanstack/react-query';
 import shuffleArray from '../utils/shuffleArray';
 
 export default function Banner() {
-  const { data, isSuccess } = useQuery(['trending'], () => fetcher(requests.getTrending), {
+  const { data, isSuccess } = useQuery(['now_playing'], () => fetcher(`/movie/now_playing?api_key=${API_KEY}&language=en-us`), {
     staleTime: 1000 * 60 * 60,
     select: (data) => shuffleArray(data.results.slice(0, 10)),
   });

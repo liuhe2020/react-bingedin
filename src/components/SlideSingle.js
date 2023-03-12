@@ -46,7 +46,7 @@ export default function SlideSingle({ movie }) {
   return (
     <Slide key={movie.id}>
       {playerStatus === 'initial' ? (
-        <img src={`${movieURL}${movie.backdrop_path}`} alt={movie?.title || movie?.name || movie?.original_title} />
+        <img src={`${movieURL}${movie.backdrop_path}`} alt={movie?.title || movie?.original_title} />
       ) : (
         <PlayerContainer>
           <Player>
@@ -69,7 +69,7 @@ export default function SlideSingle({ movie }) {
       )}
       {playerStatus !== 'playing' && (
         <Info>
-          <h1>{movie?.title || movie?.name || movie?.original_title}</h1>
+          <h1>{movie?.title || movie?.original_title}</h1>
           <button onClick={handleOnClick}>{playerStatus !== 'paused' ? 'Play Trailer' : 'Resume'}</button>
           <p>{truncate(movie.overview, 200)}</p>
         </Info>

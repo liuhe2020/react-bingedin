@@ -27,7 +27,7 @@ export default function WatchList() {
 const ListContainer = styled.div`
   width: 100%;
   min-height: 100vh;
-  padding: 100px 2% 0 2%;
+  padding: 100px 4vw 0 4vw;
   color: #ddd;
 
   h1 {
