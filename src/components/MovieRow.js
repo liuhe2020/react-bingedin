@@ -100,32 +100,6 @@ const RowContainer = styled.div`
       font-size: 1rem;
     }
   }
-
-  .slick-arrow {
-    width: 4vw;
-    height: 102%;
-    z-index: 1;
-    transition: all 0.15s;
-    &:before {
-      visibility: hidden;
-    }
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-  }
-  &:hover .slick-arrow:before {
-    visibility: visible;
-  }
-  .slick-prev {
-    left: -4.1vw;
-  }
-  .slick-next {
-    right: -4.1vw;
-  }
-
-  .slick-disabled {
-    display: none;
-  }
 `;
 
 const Row = styled(Slider)`
@@ -139,7 +113,49 @@ const Row = styled(Slider)`
     > div {
       width: 98%;
       border-radius: 0.2vw;
+      margin: 0 auto;
     }
+  }
+
+  .slick-arrow {
+    width: 4vw;
+    height: 102%;
+    z-index: 1;
+    transition: all 0.15s;
+
+    &:before {
+      visibility: hidden;
+      font-size: 2rem;
+      opacity: 0.85;
+
+      @media (max-width: 1023px) {
+        font-size: 1.25rem;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &:hover:before {
+      opacity: 1;
+    }
+  }
+
+  &:hover .slick-arrow:before {
+    visibility: visible;
+  }
+
+  .slick-prev {
+    left: -4vw;
+  }
+
+  .slick-next {
+    right: -4vw;
+  }
+
+  .slick-disabled {
+    display: none;
   }
 `;
 
