@@ -87,7 +87,7 @@ const Slide = styled.div`
 
   img {
     width: 100%;
-    height: 35.9vw;
+    aspect-ratio: 100/35.9;
     display: block;
     object-fit: cover;
     object-position: 50% 30%;
@@ -95,7 +95,8 @@ const Slide = styled.div`
 `;
 
 const PlayerContainer = styled.div`
-  height: 35.9vw;
+  width: 100%;
+  aspect-ratio: 100/35.9;
   overflow: hidden;
 `;
 
@@ -114,9 +115,9 @@ const Player = styled.div`
 
 const Info = styled.div`
   position: absolute;
-  max-width: 35vw;
-  left: 4vw;
-  top: 11vw;
+  max-width: 35%;
+  left: 4%;
+  top: 30%;
   z-index: 1;
   color: #fff;
 
@@ -174,7 +175,7 @@ const Overlay = styled.div`
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 7vw;
+  aspect-ratio: 100/7;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(17, 17, 17, 1));
   z-index: 1;
 `;

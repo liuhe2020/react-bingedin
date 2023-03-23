@@ -48,10 +48,8 @@ export default function Banner() {
 }
 
 const BannerSlider = styled(Slider)`
-  height: 35.9vw;
-
   .slick-dots {
-    bottom: -1.5vw;
+    bottom: -1.5rem;
 
     li {
       margin: 0;
@@ -61,7 +59,7 @@ const BannerSlider = styled(Slider)`
       }
 
       button:before {
-        font-size: 0.8vw;
+        font-size: 0.8rem;
         color: #fff;
         z-index: 1;
 
