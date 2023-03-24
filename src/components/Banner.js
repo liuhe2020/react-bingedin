@@ -48,6 +48,10 @@ export default function Banner() {
 }
 
 const BannerSlider = styled(Slider)`
+  @media (max-width: 600px) {
+    margin-bottom: 1.5rem;
+  }
+
   .slick-dots {
     bottom: -1.5rem;
 
@@ -78,7 +82,7 @@ const BannerSlider = styled(Slider)`
 export const Skeleton = styled.div`
   position: relative;
   width: 100%;
-  height: 35.9vw;
+  aspect-ratio: 100/35.9;
   background-color: #ededed0f;
   background: linear-gradient(100deg, #ffffff00 40%, #ffffff12 50%, #ffffff00 60%) #ededed0f;
   background-size: 200% 100%;

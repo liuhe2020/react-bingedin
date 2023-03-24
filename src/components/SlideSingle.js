@@ -115,31 +115,31 @@ const Player = styled.div`
 
 const Info = styled.div`
   position: absolute;
-  max-width: 35%;
+  max-width: 36rem;
   left: 4%;
   top: 30%;
   z-index: 1;
   color: #fff;
 
   h1 {
-    font-size: 2.5vw;
+    font-size: 2.5rem;
     text-shadow: 1px 1px 1px #000;
   }
 
   p {
-    font-size: 1.2vw;
+    font-size: 1.25rem;
     text-shadow: 1px 1px 1px #000;
-    margin-top: 1vw;
+    margin-top: 1.5rem;
   }
 
   button {
     outline: none;
     border: none;
-    font-size: 1.2vw;
+    font-size: 1.25rem;
     font-weight: 700;
-    border-radius: 0.2vw;
-    padding: 0.5vw 2vw;
-    margin-top: 1.5vw;
+    border-radius: 0.25rem;
+    padding: 0.5rem 2rem;
+    margin-top: 1.5rem;
     color: #fff;
     background-color: rgba(50, 50, 50, 0.5);
     cursor: pointer;
@@ -151,21 +151,33 @@ const Info = styled.div`
     transition: all 0.2s;
   }
 
+  @media (max-width: 1240px) {
+    p {
+      display: none;
+    }
+  }
+
   @media (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+
+    button {
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    top: 15%;
+
     h1 {
       font-size: 1rem;
     }
 
     button {
-      font-size: 0.8rem;
-    }
-  }
-
-  @media (max-width: 600px) {
-    top: 7vw;
-
-    p {
-      display: none;
+      font-size: 0.75rem;
+      margin-top: 0.75rem;
     }
   }
 `;
