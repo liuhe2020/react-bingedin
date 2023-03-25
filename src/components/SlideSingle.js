@@ -152,12 +152,16 @@ const Info = styled.div`
   }
 
   @media (max-width: 1240px) {
+    max-width: 65%;
+  }
+
+  @media (max-width: 1023px) {
     p {
       display: none;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     h1 {
       font-size: 1.5rem;
     }

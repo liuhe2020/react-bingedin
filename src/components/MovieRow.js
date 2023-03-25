@@ -92,13 +92,17 @@ const RowContainer = styled.div`
 
   h1 {
     color: #ddd;
-    font-size: 1.6vw;
+    font-size: 1.5rem;
     margin-bottom: 0.7vw;
 
     @media (max-width: 1300px) {
       margin-bottom: 0.5rem;
       font-size: 1rem;
     }
+  }
+
+  @media (max-width: 767px) {
+    padding: 1.5rem 2.25rem;
   }
 `;
 
@@ -122,6 +126,9 @@ const Row = styled(Slider)`
     height: 102%;
     z-index: 1;
     transition: all 0.15s;
+    @media (max-width: 767px) {
+      width: 2.25rem;
+    }
 
     &:before {
       visibility: hidden;
@@ -148,10 +155,16 @@ const Row = styled(Slider)`
 
   .slick-prev {
     left: -4vw;
+    @media (max-width: 767px) {
+      left: -2.25rem;
+    }
   }
 
   .slick-next {
     right: -4vw;
+    @media (max-width: 767px) {
+      right: -2.25rem;
+    }
   }
 
   .slick-disabled {

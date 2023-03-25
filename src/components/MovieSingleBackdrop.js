@@ -46,22 +46,18 @@ const Container = styled.div`
 const Wrapper = styled.div`
   color: #ddd;
   position: absolute;
-  bottom: 0.7vw;
-  right: 0.7vw;
-  width: 12vw;
+  bottom: 8%;
+  right: 4%;
+  width: 80%;
   text-align: right;
-  font-size: 1vw;
-  font-weight: 600;
-  line-height: 1.2vw;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.25;
   z-index: 2;
   transition: all 0.2s;
 
-  @media (max-width: 1000px) {
-    font-size: 11px;
-    line-height: 13px;
-    width: 130px;
-    bottom: 0.5rem;
-    right: 0.7rem;
+  @media (max-width: 1240px) {
+    font-size: 0.75rem;
   }
 
   span {
