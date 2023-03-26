@@ -71,12 +71,18 @@ export default function Modal({ id, onClose }) {
 
   const isSuccess = results.every((q) => q.isSuccess === true);
 
-  // use createPortal to append modal to the body with id 'modal-root'
+  // use createPortal to append modal to the body with id 'modal'
   return ReactDom.createPortal(
     <>
-      <ModalContainer ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+      <ModalContainer
+        ref={modalRef}
+        onClick={closeModal}
+        initial={{ opacity: 0, overflowY: 'hidden' }} // animate overflow to stop scrollbar from flashing on component dismount
+        animate={{ opacity: 1, overflowY: 'scroll' }}
+        exit={{ opacity: 0, overflowY: 'hidden' }}
+      >
         {isSuccess && (
-          <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
+          <Container initial={{ marginTop: '100%' }} animate={{ marginTop: '8%' }} exit={{ marginTop: '100%' }} transition={{ type: 'tween' }}>
             <Player>
               <iframe
                 width='853'
@@ -158,15 +164,14 @@ const ModalContainer = styled(motion.div)`
   top: 0;
   left: 0;
   z-index: 10;
-  overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.8);
 `;
 
 const Container = styled(motion.div)`
+  position: relative;
   width: 55%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 8%;
   background-color: #181818;
   color: #ddd;
   border-radius: 0.5rem;

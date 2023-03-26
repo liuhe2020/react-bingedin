@@ -14,6 +14,7 @@ export default function MovieSingleBackdrop({ id, poster, title }) {
     <>
       <Container
         onClick={() => {
+          // handle scrollbar and content jump on modal open/close
           document.body.style.overflow = 'hidden';
           document.body.style.paddingRight = '17px';
           document.querySelector('nav').style.padding = '0 calc(4vw + 17px) 0 4vw';
@@ -31,7 +32,7 @@ export default function MovieSingleBackdrop({ id, poster, title }) {
             key='modal-backdrop'
             id={id}
             onClose={() => {
-              document.body.style.overflow = 'unset';
+              document.body.style.overflow = 'auto';
               document.body.style.paddingRight = '0';
               document.querySelector('nav').style.padding = '0 4vw';
               setModalOpen(false);
