@@ -17,7 +17,15 @@ export default function MovieSinglePoster({ id, poster, title, isButton }) {
   return (
     <Container hasPoster={poster}>
       <img src={poster ? `${movieBaseURL}${poster}` : `./images/img_unavail.jpg`} alt={title} />
-      <div onClick={() => setModalOpen(true)}>
+      <div
+        onClick={() => {
+          // handle scrollbar and content jump on modal open/close
+          document.body.style.overflow = 'hidden';
+          document.body.style.paddingRight = '17px';
+          document.querySelector('nav').style.padding = '0 calc(4vw + 17px) 0 4vw';
+          setModalOpen(true);
+        }}
+      >
         <span>{title}</span>
       </div>
       {isButton && (
@@ -25,7 +33,20 @@ export default function MovieSinglePoster({ id, poster, title, isButton }) {
           <StyledMinusCircleIcon />
         </motion.button>
       )}
-      <AnimatePresence>{modalOpen && <Modal key='modal-poster' id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {modalOpen && (
+          <Modal
+            key='modal-poster'
+            id={id}
+            onClose={() => {
+              document.body.style.overflow = 'auto';
+              document.body.style.paddingRight = '0';
+              document.querySelector('nav').style.padding = '0 4vw';
+              setModalOpen(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </Container>
   );
 }
