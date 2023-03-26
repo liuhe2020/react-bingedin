@@ -12,13 +12,33 @@ export default function MovieSingleBackdrop({ id, poster, title }) {
 
   return (
     <>
-      <Container onClick={() => setModalOpen(true)}>
+      <Container
+        onClick={() => {
+          document.body.style.overflow = 'hidden';
+          document.body.style.paddingRight = '17px';
+          document.querySelector('nav').style.padding = '0 calc(4vw + 17px) 0 4vw';
+          setModalOpen(true);
+        }}
+      >
         {poster ? <img src={`${movieBaseURL}${poster}`} alt={title} /> : <Skeleton />}
         <Wrapper>
           <span>{title}</span>
         </Wrapper>
       </Container>
-      <AnimatePresence>{modalOpen && <Modal key='modal-backdrop' id={id} onClose={() => setModalOpen(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {modalOpen && (
+          <Modal
+            key='modal-backdrop'
+            id={id}
+            onClose={() => {
+              document.body.style.overflow = 'unset';
+              document.body.style.paddingRight = '0';
+              document.querySelector('nav').style.padding = '0 4vw';
+              setModalOpen(false);
+            }}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

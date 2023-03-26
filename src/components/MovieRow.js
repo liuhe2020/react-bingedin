@@ -14,11 +14,11 @@ export default function MovieRow({ title, url }) {
   });
 
   const PrevBtn = (props) => {
-    const { className, onClick, currentSlide } = props;
+    const { className, onClick } = props;
     return <button className={className} onClick={onClick} />;
   };
   const NextBtn = (props) => {
-    const { className, onClick, slideCount, currentSlide } = props;
+    const { className, onClick } = props;
     return <button className={className} onClick={onClick} />;
   };
 
@@ -93,9 +93,9 @@ const RowContainer = styled.div`
   h1 {
     color: #ddd;
     font-size: 1.5rem;
-    margin-bottom: 0.7vw;
+    margin-bottom: 0.75rem;
 
-    @media (max-width: 1300px) {
+    @media (max-width: 1240px) {
       margin-bottom: 0.5rem;
       font-size: 1rem;
     }

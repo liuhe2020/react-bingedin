@@ -73,117 +73,111 @@ export default function Modal({ id, onClose }) {
 
   // use createPortal to append modal to the body with id 'modal-root'
   return ReactDom.createPortal(
-    <ModalContainer>
-      <Overlay ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
-      {isSuccess && (
-        <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
-          <Player>
-            <iframe
-              width='853'
-              height='480'
-              src={`https://www.youtube.com/embed/${results[1].data}`}
-              frameBorder='0'
-              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-              allowFullScreen
-              title='Embedded youtube'
-            />
-          </Player>
-          <Detail>
-            <TitleWrapper>
-              <h1>{results[0].data.title}</h1>
-              {isWatchList ? (
-                <StyledButton
-                  onClick={() => {
-                    removeWatchList(id);
-                    toast('Removed from watch list');
-                  }}
-                >
-                  <StyledMinusCircleIcon />
-                  Watch List
-                </StyledButton>
-              ) : (
-                <StyledButton
-                  onClick={() => {
-                    addWatchList(results[0].data);
-                    toast('Added to watch list');
-                  }}
-                >
-                  <StyledPlusCircleIcon />
-                  Watch List
-                </StyledButton>
-              )}
-            </TitleWrapper>
-            <Info>
-              <StyledStarIcon />
-              <span>{results[0].data.vote_average}</span>
-              <p>{`${results[0].data.runtime} mins`}</p>
-              <p>{results[0].data.release_date}</p>
-            </Info>
-            <Overview>{results[0].data.overview}</Overview>
-            <Credits>
-              <p>
-                Genres:
-                <span>{results[0].data.genres}</span>
-              </p>
-              <p>
-                Language:
-                <span>{results[0].data.original_language}</span>
-              </p>
-              <p>
-                Cast: <span>{results[2].data.cast}</span>
-              </p>
-              <p>
-                Director: <span>{results[2].data.directors}</span>
-              </p>
-              <p>
-                Production: <span>{results[0].data.production_companies}</span>
-              </p>
-            </Credits>
-          </Detail>
-          <WrapXCircleIcon onClick={onClose} whileHover={{ scale: 1.1 }}>
-            <StyledXCircleIcon />
-          </WrapXCircleIcon>
-        </Container>
-      )}
-    </ModalContainer>,
+    <>
+      <ModalContainer ref={modalRef} onClick={closeModal} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        {isSuccess && (
+          <Container initial={{ y: '100vh' }} animate={{ y: 0 }} exit={{ y: '100vh' }} transition={{ type: 'tween' }}>
+            <Player>
+              <iframe
+                width='853'
+                height='480'
+                src={`https://www.youtube.com/embed/${results[1].data}`}
+                frameBorder='0'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                allowFullScreen
+                title='Embedded youtube'
+              />
+            </Player>
+            <Detail>
+              <TitleWrapper>
+                <h1>{results[0].data.title}</h1>
+                {isWatchList ? (
+                  <StyledButton
+                    onClick={() => {
+                      removeWatchList(id);
+                      toast('Removed from watch list');
+                    }}
+                  >
+                    <StyledMinusCircleIcon />
+                    Watch List
+                  </StyledButton>
+                ) : (
+                  <StyledButton
+                    onClick={() => {
+                      addWatchList(results[0].data);
+                      toast('Added to watch list');
+                    }}
+                  >
+                    <StyledPlusCircleIcon />
+                    Watch List
+                  </StyledButton>
+                )}
+              </TitleWrapper>
+              <Info>
+                <StyledStarIcon />
+                <span>{results[0].data.vote_average}</span>
+                <p>{`${results[0].data.runtime} mins`}</p>
+                <p>{results[0].data.release_date}</p>
+              </Info>
+              <Overview>{results[0].data.overview}</Overview>
+              <Credits>
+                <p>
+                  Genres:
+                  <span>{results[0].data.genres}</span>
+                </p>
+                <p>
+                  Language:
+                  <span>{results[0].data.original_language}</span>
+                </p>
+                <p>
+                  Cast: <span>{results[2].data.cast}</span>
+                </p>
+                <p>
+                  Director: <span>{results[2].data.directors}</span>
+                </p>
+                <p>
+                  Production: <span>{results[0].data.production_companies}</span>
+                </p>
+              </Credits>
+            </Detail>
+            <WrapXCircleIcon onClick={onClose} whileHover={{ scale: 1.1 }}>
+              <StyledXCircleIcon />
+            </WrapXCircleIcon>
+          </Container>
+        )}
+      </ModalContainer>
+    </>,
     document.getElementById('modal')
   );
 }
 
-const ModalContainer = styled.div`
+const ModalContainer = styled(motion.div)`
   position: fixed;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   top: 0;
   left: 0;
   z-index: 10;
-  overflow-y: scroll;
-`;
-
-const Overlay = styled(motion.div)`
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.8);
 `;
 
 const Container = styled(motion.div)`
-  position: absolute;
-  top: 3vw;
-  left: 4vw;
-  right: 4vw;
-  margin: 0 auto;
-  width: 55vw;
+  width: 55%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 8%;
   background-color: #181818;
   color: #ddd;
-  border-radius: 0.5vw;
+  border-radius: 0.5rem;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.65), 0 6px 6px rgba(0, 0, 0, 0.7);
 
-  @media (max-width: 900px) {
-    top: 65px;
-    width: 80vw;
+  @media (max-width: 1023px) {
+    width: 70%;
+  }
+
+  @media (max-width: 767px) {
+    width: 80%;
   }
 `;
 
@@ -209,11 +203,11 @@ const Player = styled.div`
 
 const Detail = styled.div`
   position: relative;
-  padding: 2vw 3vw;
+  padding: 2rem 3rem;
   overflow: hidden;
 
-  @media (max-width: 768px) {
-    padding: 20px;
+  @media (max-width: 767px) {
+    padding: 1.5rem;
   }
 `;
 
@@ -222,15 +216,15 @@ const TitleWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1.5vw;
-  margin-bottom: 1.5vw;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 `;
 
 const Info = styled.div`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 0.75vw;
+  margin-bottom: 0.75rem;
 
   span {
     margin: 0 1rem 0 0.2rem;
@@ -249,7 +243,7 @@ const StyledButton = styled.button`
   min-width: 8rem;
   outline: none;
   border: none;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   border-radius: 0.2rem;
   padding: 0.5rem 0.5rem 0.5rem 0.2rem;
@@ -265,21 +259,21 @@ const StyledButton = styled.button`
 `;
 
 const Overview = styled.div`
-  font-size: 18px;
-  margin-bottom: 3vw;
+  font-size: 1.125rem;
+  margin-bottom: 2.5rem;
 `;
 
 const Credits = styled.div`
   p {
-    font-size: 15px;
+    font-size: 1rem;
     color: #aaa;
     margin-bottom: 0.5rem;
   }
 
   span {
-    font-size: 16px;
+    font-size: 1rem;
     color: #ddd;
-    margin-left: 0.3rem;
+    margin-left: 0.25rem;
   }
 `;
 
